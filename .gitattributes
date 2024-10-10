@@ -1,0 +1,9 @@
+* text=auto eol=lf
+
+*.php diff=php
+
+/.git export-ignore
+.gitignore export-ignore
+/.idea export-ignore
+/test-laravel export-ignore
+/vendor export-ignore
