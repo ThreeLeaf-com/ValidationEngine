@@ -6,13 +6,11 @@ use PHPUnit\Framework\TestCase;
 use ThreeLeaf\ValidationEngine\Enums\DayOfWeek;
 use ThreeLeaf\ValidationEngine\Rules\EnumRule;
 
-/** @covers {@link EnumRule}. */
+/** Test {@link EnumRule}. */
 class EnumRuleTest extends TestCase
 {
-    /**
-     * Test that a valid state abbreviation passes.
-     */
-    public function testValidStatePasses()
+    /** @test that a valid enum abbreviation passes. */
+    public function testValidEnumPasses()
     {
         $rule = new EnumRule(DayOfWeek::class);
         $failed = false;
@@ -23,17 +21,15 @@ class EnumRuleTest extends TestCase
             $message = $msg;
         };
 
-        /* Assume 'Monday' is a valid state abbreviation. */
-        $rule->validate('state', 'Monday', $fail);
+        /* Assume 'Monday' is a valid enum abbreviation. */
+        $rule->validate('enum', 'Monday', $fail);
 
-        $this->assertFalse($failed, 'Validation should pass when a valid state abbreviation is provided.');
+        $this->assertFalse($failed, 'Validation should pass when a valid enum abbreviation is provided.');
         $this->assertTrue($message == '');
     }
 
-    /**
-     * Test that an invalid state abbreviation fails.
-     */
-    public function testInvalidStateFails()
+    /** @test that an invalid enum abbreviation fails. */
+    public function testInvalidEnumFails()
     {
         $rule = new EnumRule(DayOfWeek::class);
         $failed = false;
@@ -44,19 +40,17 @@ class EnumRuleTest extends TestCase
             $message = $msg;
         };
 
-        /* Assume 'XX' is not a valid state abbreviation. */
-        $rule->validate('state', 'XX', $fail);
+        /* Assume 'XX' is not a valid enum abbreviation. */
+        $rule->validate('enum', 'XX', $fail);
 
-        $this->assertTrue($failed, 'Validation should fail when an invalid state abbreviation is provided.');
-        $this->assertStringContainsString('The state is not a valid instance of', $message);
+        $this->assertTrue($failed, 'Validation should fail when an invalid enum abbreviation is provided.');
+        $this->assertStringContainsString('The enum is not a valid instance of', $message);
     }
 
-    /**
-     * Test that the value is in the allowed subset of states.
-     */
+    /** @test that the value is in the allowed subset of enums. */
     public function testAllowedSubsetPasses()
     {
-        $rule = new EnumRule(DayOfWeek::class, [DayOfWeek::Monday, DayOfWeek::Wednesday]);
+        $rule = new EnumRule(DayOfWeek::class, [DayOfWeek::MONDAY, DayOfWeek::WEDNESDAY]);
         $failed = false;
         $message = '';
 
@@ -66,18 +60,16 @@ class EnumRuleTest extends TestCase
         };
 
         /* 'Monday' should be in the allowed subset. */
-        $rule->validate('state', 'Monday', $fail);
+        $rule->validate('enum', 'Monday', $fail);
 
         $this->assertFalse($failed, 'Validation should pass when the value is within the allowed subset.');
         $this->assertTrue($message == '');
     }
 
-    /**
-     * Test that a value outside the allowed subset fails.
-     */
+    /** @test that a value outside the allowed subset fails. */
     public function testOutsideAllowedSubsetFails()
     {
-        $rule = new EnumRule(DayOfWeek::class, [DayOfWeek::Monday, DayOfWeek::Tuesday]);
+        $rule = new EnumRule(DayOfWeek::class, [DayOfWeek::MONDAY, DayOfWeek::TUESDAY]);
         $failed = false;
         $message = '';
 
@@ -93,9 +85,7 @@ class EnumRuleTest extends TestCase
         $this->assertStringContainsString('The day must be one of the allowed values.', $message);
     }
 
-    /**
-     * Test that a null value fails validation.
-     */
+    /** @test that a null value fails validation. */
     public function testNullValueFails()
     {
         $rule = new EnumRule(DayOfWeek::class);
@@ -107,16 +97,14 @@ class EnumRuleTest extends TestCase
             $message = $msg;
         };
 
-        $rule->validate('state', null, $fail);
+        $rule->validate('enum', null, $fail);
 
         $this->assertTrue($failed, 'Validation should fail when a null value is provided.');
-        $this->assertStringContainsString('The state is not a valid instance of', $message);
+        $this->assertStringContainsString('The enum is not a valid instance of', $message);
     }
 
-    /**
-     * Test that a valid state name passes.
-     */
-    public function testValidStateNamePasses()
+    /** @test that a valid enum name passes. */
+    public function testValidEnumNamePasses()
     {
         $rule = new EnumRule(DayOfWeek::class);
         $failed = false;
@@ -127,17 +115,15 @@ class EnumRuleTest extends TestCase
             $message = $msg;
         };
 
-        /* Assume 'Monday' is a valid state name corresponding to DayOfWeek::Monday */
+        /* Assume 'Monday' is a valid enum name corresponding to DayOfWeek::Monday */
         $rule->validate('day', 'Monday', $fail);
 
         $this->assertFalse($failed, 'Validation should pass when a valid day name is provided.');
         $this->assertTrue($message == '');
     }
 
-    /**
-     * Test that an invalid state name fails.
-     */
-    public function testInvalidStateNameFails()
+    /** @test that an invalid enum name fails. */
+    public function testInvalidEnumNameFails()
     {
         $rule = new EnumRule(DayOfWeek::class);
         $failed = false;
@@ -148,10 +134,10 @@ class EnumRuleTest extends TestCase
             $message = $msg;
         };
 
-        /* Assume 'Atlantis' is not a valid state name. */
-        $rule->validate('state', 'Atlantis', $fail);
+        /* Assume 'Atlantis' is not a valid enum name. */
+        $rule->validate('enum', 'Atlantis', $fail);
 
-        $this->assertTrue($failed, 'Validation should fail when an invalid state name is provided.');
-        $this->assertStringContainsString('The state is not a valid instance of', $message);
+        $this->assertTrue($failed, 'Validation should fail when an invalid enum name is provided.');
+        $this->assertStringContainsString('The enum is not a valid instance of', $message);
     }
 }

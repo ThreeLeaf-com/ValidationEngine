@@ -7,13 +7,13 @@ use PHPUnit\Framework\TestCase;
 use ThreeLeaf\ValidationEngine\Enums\DayOfWeek;
 use ThreeLeaf\ValidationEngine\Rules\DayTimeRule;
 
-/** @covers {@link DayTimeRule}. */
+/** Test {@link DayTimeRule}. */
 class DayTimeRuleTest extends TestCase
 {
     /** @test the rule for a specific day (e.g., Monday). */
     public function testSpecificDayPasses()
     {
-        $rule = new DayTimeRule(DayOfWeek::Monday, '09:00', '17:00', 'UTC');
+        $rule = new DayTimeRule(DayOfWeek::MONDAY, '09:00', '17:00', 'UTC');
         $failed = false;
         $message = '';
 
@@ -34,19 +34,10 @@ class DayTimeRuleTest extends TestCase
         $this->assertStringContainsString('The date_time is not within the allowed day-of-week', $message);
     }
 
-    /** Helper method to create a fail closure that captures messages. */
-    protected function createFailClosure(&$failed, &$message): Closure
-    {
-        return function ($msg) use (&$failed, &$message) {
-            $failed = true;
-            $message = $msg;
-        };
-    }
-
     /** @test the rule for "Weekend". */
     public function testWeekendPasses()
     {
-        $rule = new DayTimeRule(DayOfWeek::Weekend, '08:00', '20:00', 'America/New_York');
+        $rule = new DayTimeRule(DayOfWeek::WEEKEND, '08:00', '20:00', 'America/New_York');
         $failed = false;
         $message = '';
 
@@ -69,7 +60,7 @@ class DayTimeRuleTest extends TestCase
     /** @test the rule for "Weekday". */
     public function testWeekdayPasses()
     {
-        $rule = new DayTimeRule(DayOfWeek::Weekday, '09:00', '17:00', 'UTC');
+        $rule = new DayTimeRule(DayOfWeek::WEEKDAY, '09:00', '17:00', 'UTC');
         $failed = false;
         $message = '';
 
@@ -87,7 +78,7 @@ class DayTimeRuleTest extends TestCase
     /** @test the rule for "All" days. */
     public function testAllDaysPasses()
     {
-        $rule = new DayTimeRule(DayOfWeek::All, '00:00', '23:59', 'UTC');
+        $rule = new DayTimeRule(DayOfWeek::ALL, '00:00', '23:59', 'UTC');
         $failed = false;
         $message = '';
 
@@ -102,7 +93,7 @@ class DayTimeRuleTest extends TestCase
     /** @test the rule defaults to the current time when no value is provided. */
     public function testDefaultsToNow()
     {
-        $rule = new DayTimeRule(DayOfWeek::All, '00:00', '23:59', 'UTC');
+        $rule = new DayTimeRule(DayOfWeek::ALL, '00:00', '23:59', 'UTC');
         $failed = false;
         $message = '';
 
@@ -114,7 +105,7 @@ class DayTimeRuleTest extends TestCase
     /** @test the rule respects timezones. */
     public function testRespectsTimezone()
     {
-        $rule = new DayTimeRule(DayOfWeek::Monday, '09:00', '17:00', 'America/New_York');
+        $rule = new DayTimeRule(DayOfWeek::MONDAY, '09:00', '17:00', 'America/New_York');
         $failed = false;
         $message = '';
 
@@ -127,5 +118,14 @@ class DayTimeRuleTest extends TestCase
         $rule->validate('date_time', '2024-10-14 23:00:00 UTC', $this->createFailClosure($failed, $message));
         $this->assertTrue($failed, 'Validation should fail when the time is outside the range in the specified timezone.');
         $this->assertStringContainsString('The date_time is not within the allowed time window', $message);
+    }
+
+    /** Helper method to create a fail closure that captures messages. */
+    protected function createFailClosure(&$failed, &$message): Closure
+    {
+        return function ($msg) use (&$failed, &$message) {
+            $failed = true;
+            $message = $msg;
+        };
     }
 }

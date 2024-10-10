@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use InvalidArgumentException;
 use ReflectionEnum;
-use Throwable;
+use ReflectionException;
 use UnitEnum;
 
 /**
@@ -92,8 +92,6 @@ class EnumRule implements ValidationRule
             $fail("The $attribute is not a valid instance of $this->enumClass.");
         } elseif (!empty($this->allowedValues) && !in_array($parsedValue, $this->allowedValues, true)) {
             $fail("The $attribute must be one of the allowed values.");
-        } elseif (!$parsedValue instanceof $this->enumClass) {
-            $fail("The $attribute is not a valid instance of $this->enumClass.");
         }
     }
 
@@ -151,7 +149,7 @@ class EnumRule implements ValidationRule
      *
      * @return UnitEnum|null The matched enum instance, or null if not found.
      */
-    protected function convertToEnumByName(mixed $input): ?UnitEnum
+    public function convertToEnumByName(mixed $input): ?UnitEnum
     {
         $result = null;
 
@@ -163,7 +161,7 @@ class EnumRule implements ValidationRule
                     break;
                 }
             }
-        } catch (Throwable) {
+        } catch (ReflectionException) {
             /* Ignore exceptions. */
         }
 

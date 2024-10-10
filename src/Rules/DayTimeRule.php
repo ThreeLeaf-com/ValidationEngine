@@ -82,7 +82,7 @@ class DayTimeRule implements ValidationRule
      * @param string    $timezone  Timezone (e.g., 'America/New_York')
      */
     public function __construct(
-        DayOfWeek $dayOfWeek = DayOfWeek::All,
+        DayOfWeek $dayOfWeek = DayOfWeek::ALL,
         string    $startTime = '00:00',
         string    $endTime = '23:59',
         string    $timezone = 'UTC',
@@ -138,9 +138,9 @@ class DayTimeRule implements ValidationRule
         $weekdayDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
         return match ($this->dayOfWeek) {
-            DayOfWeek::All => true,
-            DayOfWeek::Weekend => in_array($currentDay, $weekendDays),
-            DayOfWeek::Weekday => in_array($currentDay, $weekdayDays),
+            DayOfWeek::ALL => true,
+            DayOfWeek::WEEKEND => in_array($currentDay, $weekendDays),
+            DayOfWeek::WEEKDAY => in_array($currentDay, $weekdayDays),
             default => $currentDay === $this->dayOfWeek->value,
         };
     }

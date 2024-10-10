@@ -1,5 +1,6 @@
 *.iml
 *.log
+*.cache
 .DS_Store
 composer.lock
 .idea/
@@ -7,3 +8,4 @@ composer.lock
 cache/
 storage/
 vendor/
+target/

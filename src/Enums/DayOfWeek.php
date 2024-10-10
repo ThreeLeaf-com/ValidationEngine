@@ -25,14 +25,14 @@ namespace ThreeLeaf\ValidationEngine\Enums;
  */
 enum DayOfWeek: string
 {
-    case Monday = 'Monday';
-    case Tuesday = 'Tuesday';
-    case Wednesday = 'Wednesday';
-    case Thursday = 'Thursday';
-    case Friday = 'Friday';
-    case Saturday = 'Saturday';
-    case Sunday = 'Sunday';
-    case Weekend = 'Weekend';
-    case Weekday = 'Weekday';
-    case All = 'All';
+    case MONDAY = 'Monday';
+    case TUESDAY = 'Tuesday';
+    case WEDNESDAY = 'Wednesday';
+    case THURSDAY = 'Thursday';
+    case FRIDAY = 'Friday';
+    case SATURDAY = 'Saturday';
+    case SUNDAY = 'Sunday';
+    case WEEKEND = 'Weekend';
+    case WEEKDAY = 'Weekday';
+    case ALL = 'All';
 }
