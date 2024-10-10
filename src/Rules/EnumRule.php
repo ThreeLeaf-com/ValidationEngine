@@ -7,6 +7,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use InvalidArgumentException;
 use ReflectionEnum;
 use Throwable;
+use UnitEnum;
 
 /**
  * Class EnumValidationRule
@@ -22,6 +23,9 @@ use Throwable;
  *
  * - Validate that a value is one of a subset of enum values:
  *   new EnumValidationRule(MyEnum::class, [MyEnum::FirstValue, MyEnum::SecondValue])
+ *
+ * - Validate that a value is one of a subset using enum names:
+ *   new EnumValidationRule(MyEnum::class, ['EnumValue', 'EnumName', MyEnum::NAME_TWO])
  *
  * Example with Validator:
  *
@@ -50,10 +54,10 @@ class EnumRule implements ValidationRule
     /**
      * Create a new rule instance.
      *
-     * @param string $enumClass     The fully qualified class name of the enum.
-     * @param array  $allowedValues Optional array of allowed enum values.
+     * @param string       $enumClass     The fully qualified class name of the enum.
+     * @param array<mixed> $allowedValues Optional array of allowed enum values, names, or instances.
      *
-     * @throws InvalidArgumentException If the provided class is not a valid enum.
+     * @throws InvalidArgumentException If the provided class is not a valid enum or an allowed value does not represent a valid enum.
      */
     public function __construct(string $enumClass, array $allowedValues = [])
     {
@@ -62,7 +66,13 @@ class EnumRule implements ValidationRule
         }
 
         $this->enumClass = $enumClass;
-        $this->allowedValues = $allowedValues;
+        $this->allowedValues = $this->convertToEnumArray($allowedValues);
+        if (count($allowedValues) != count($this->allowedValues)) {
+            $allowedValuesString = implode(', ', array_map(function ($value) {
+                return (string)$value;
+            }, $allowedValues));
+            throw new InvalidArgumentException("At least one of [$allowedValuesString] is not a valid instance of $this->enumClass.");
+        }
     }
 
     /**
@@ -76,27 +86,13 @@ class EnumRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        /* If the value is a string, attempt to convert it to an enum instance by value or name */
-        if (is_string($value)) {
-            $value = $this->getEnumFromValueOrName($value);
-        }
+        $parsedValue = $this->convertToEnum($value);
 
-        /* If the value is null after conversion, it means it's not a valid enum instance */
-        if ($value === null) {
+        if ($parsedValue === null) {
             $fail("The $attribute is not a valid instance of $this->enumClass.");
-            return;
-        }
-
-        /* If allowed values are provided, check that the value is in the array */
-        if (!empty($this->allowedValues)) {
-            if (!in_array($value, $this->allowedValues, true)) {
-                $fail("The $attribute must be one of the allowed values.");
-            }
-            return;
-        }
-
-        /* No specific allowed values, just ensure it's a valid enum instance */
-        if (!$value instanceof $this->enumClass) {
+        } elseif (!empty($this->allowedValues) && !in_array($parsedValue, $this->allowedValues, true)) {
+            $fail("The $attribute must be one of the allowed values.");
+        } elseif (!$parsedValue instanceof $this->enumClass) {
             $fail("The $attribute is not a valid instance of $this->enumClass.");
         }
     }
@@ -104,30 +100,73 @@ class EnumRule implements ValidationRule
     /**
      * Attempts to convert a string to an enum instance using the value or the name.
      *
-     * @param string $input The input string to match.
+     * @param mixed $input The input to convert.
      *
-     * @return mixed The matched enum instance, or null if not found.
+     * @return UnitEnum|null The matched enum instance, or null if not found.
      */
-    protected function getEnumFromValueOrName(string $input): mixed
+    public function convertToEnum(mixed $input): ?UnitEnum
     {
-        /** @noinspection PhpUndefinedMethodInspection tryFrom is a standard enum function. */
-        $enumInstance = $this->enumClass::tryFrom($input);
-        if ($enumInstance !== null) {
-            return $enumInstance;
+        if ($input instanceof $this->enumClass || $input === null) {
+            $convertedEnum = $input;
+        } else {
+            /** @noinspection PhpUndefinedMethodInspection tryFrom is a standard enum function. */
+            $enumInstance = $this->enumClass::tryFrom($input);
+
+            if ($enumInstance !== null) {
+                $convertedEnum = $enumInstance;
+            } else {
+                $convertedEnum = $this->convertToEnumByName($input);
+            }
         }
 
-        /* If no match by value, try matching by name */
+        return $convertedEnum;
+    }
+
+    /**
+     * Convert an array of values to an array of enum instances.
+     *
+     * @param array<mixed> $inputs The inputs to convert.
+     *
+     * @return array<UnitEnum> The array of valid enum instances.
+     */
+    public function convertToEnumArray(array $inputs): array
+    {
+        $enumInstances = [];
+
+        foreach ($inputs as $input) {
+            $enumInstance = $this->convertToEnum($input);
+
+            if ($enumInstance) {
+                $enumInstances[] = $enumInstance;
+            }
+        }
+
+        return $enumInstances;
+    }
+
+    /**
+     * Attempts to convert a string to an enum instance by its name.
+     *
+     * @param mixed $input The input string to match.
+     *
+     * @return UnitEnum|null The matched enum instance, or null if not found.
+     */
+    protected function convertToEnumByName(mixed $input): ?UnitEnum
+    {
+        $result = null;
+
         try {
             $reflection = new ReflectionEnum($this->enumClass);
             foreach ($reflection->getCases() as $case) {
                 if ($case->getName() === $input) {
-                    return $case->getValue();
+                    $result = $case->getValue();
+                    break;
                 }
             }
         } catch (Throwable) {
-            /* Ignore */
+            /* Ignore exceptions. */
         }
 
-        return null;
+        return $result;
     }
 }
