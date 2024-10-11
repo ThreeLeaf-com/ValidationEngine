@@ -1,11 +1,13 @@
-*.iml
-*.log
-*.cache
-.DS_Store
-composer.lock
+# Folders
 .idea/
 .run/
 cache/
 storage/
-vendor/
 target/
+vendor/
+# Files
+*.cache
+*.iml
+*.lock
+*.log
+.DS_Store
