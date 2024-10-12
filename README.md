@@ -87,6 +87,12 @@ Contributions are welcome! Please submit a pull request or open an issue to disc
 
 This library is open-sourced software licensed under the [GPL-3.0+](https://www.gnu.org/licenses/gpl-3.0.html).
 
----
+## Miscellaneous
 
-This `README.md` covers installation, usage, and the database structure for the `ValidationEngine` library, providing a clear guide for users. Let me know if you'd like to include any additional sections or make adjustments!
+### OpenApi Documentation
+
+OpenAPI documentation can be generated within the application using the command:
+
+```
+composer generate-swagger
+```
