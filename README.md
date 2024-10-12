@@ -9,10 +9,12 @@ This library is particularly useful for scenarios where validation logic needs t
 
 # ValidationEngine
 
-[![Tests](https://github.com/ThreeLeaf-com/ValidationEngine/actions/workflows/tests.yaml/badge.svg?branch=main)](https://github.com/ThreeLeaf-com/ValidationEngine/actions/workflows/tests.yaml?query=branch%3Amain)
 [![Latest Stable Version](https://poser.pugx.org/threeleaf/validation-engine/v/stable)](https://packagist.org/packages/threeleaf/validation-engine)
-[![Total Downloads](https://poser.pugx.org/threeleaf/validation-engine/downloads)](https://packagist.org/packages/threeleaf/validation-engine)
+[![Build Status](https://github.com/ThreeLeaf-com/ValidationEngine/actions/workflows/tests.yaml/badge.svg?branch=main)](https://github.com/ThreeLeaf-com/ValidationEngine/actions)
 [![License](https://poser.pugx.org/threeleaf/validation-engine/license)](https://packagist.org/packages/threeleaf/validation-engine)
+[![PHP Version](https://img.shields.io/packagist/php-v/threeleaf/validation-engine)](https://packagist.org/packages/threeleaf/validation-engine)
+[![GitHub last commit](https://img.shields.io/github/last-commit/ThreeLeaf-com/ValidationEngine)](https://github.com/ThreeLeaf-com/ValidationEngine/commits/main)
+[![Total Downloads](https://poser.pugx.org/threeleaf/validation-engine/downloads)](https://packagist.org/packages/threeleaf/validation-engine)
 
 ## Installation
 
