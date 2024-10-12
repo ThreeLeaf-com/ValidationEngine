@@ -18,10 +18,13 @@ class OpenApiSpec
 }
 
 try {
+    $targetDirectory = __DIR__ . '/../target';
+    if (!is_dir($targetDirectory)) {
+        mkdir($targetDirectory, 0755, true);
+    }
     $openApi = Generator::scan($paths);
-
     $jsonContent = $openApi->toJson();
-    file_put_contents(__DIR__ . '/../target/api-docs.json', $jsonContent);
+    file_put_contents($targetDirectory . '/api-docs.json', $jsonContent);
 
     echo "\nSwagger documentation generated successfully.\n\n";
     echo "Scanned paths: \n* " . implode("\n* ", $paths) . "\n\n";

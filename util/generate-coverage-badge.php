@@ -6,14 +6,14 @@
  *
  * @param string $coverageReportFile The coverage report file.
  *
- * @return float|int The percentage of coverage
+ * @return int The percentage of coverage
  * @noinspection SpellCheckingInspection
  */
-function getCoveragePercentageFromHtml(string $coverageReportFile): float|int
+function getCoveragePercentageFromHtml(string $coverageReportFile): int
 {
     $htmlContent = file_get_contents($coverageReportFile);
-    if (preg_match('/<span class="sr-only">([0-9]+\.[0-9]+)% covered \(success\)<\/span>/', $htmlContent, $matches)) {
-        return round(floatval($matches[1]));
+    if (preg_match('/>([0-9]+\.[0-9]+)% covered/', $htmlContent, $matches)) {
+        return (int)round(floatval($matches[1]));
     }
     return 0;
 }
@@ -37,8 +37,11 @@ function createBadge(float|int $coveragePercent, string $badgeFileName): void
 /** The PhpUnit coverage report. */
 $coverageReportFile = __DIR__ . '/../target/coverage/index.html';
 if (file_exists($coverageReportFile)) {
-    $badgeFileName = __DIR__ . '/../public/images/coverage-badge.svg';
-
+    $imageFolder = __DIR__ . '/../public/images';
+    if (!is_dir($imageFolder)) {
+        mkdir($imageFolder, 0755, true);
+    }
+    $badgeFileName = $imageFolder . '/coverage-badge.svg';
     $coveragePercent = getCoveragePercentageFromHtml($coverageReportFile);
     createBadge($coveragePercent, $badgeFileName);
 }
