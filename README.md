@@ -11,6 +11,7 @@ This library is particularly useful for scenarios where validation logic needs t
 
 [![Latest Stable Version](https://poser.pugx.org/threeleaf/validation-engine/v/stable)](https://packagist.org/packages/threeleaf/validation-engine)
 [![Build Status](https://github.com/ThreeLeaf-com/ValidationEngine/actions/workflows/tests.yaml/badge.svg?branch=main)](https://github.com/ThreeLeaf-com/ValidationEngine/actions)
+![Coverage](./public/images/coverage-badge.svg)
 [![License](https://poser.pugx.org/threeleaf/validation-engine/license)](https://packagist.org/packages/threeleaf/validation-engine)
 [![PHP Version](https://img.shields.io/packagist/php-v/threeleaf/validation-engine)](https://packagist.org/packages/threeleaf/validation-engine)
 [![GitHub last commit](https://img.shields.io/github/last-commit/ThreeLeaf-com/ValidationEngine)](https://github.com/ThreeLeaf-com/ValidationEngine/commits/main)
@@ -102,6 +103,14 @@ This library is open-sourced software licensed under the [GPL-3.0+](https://www.
 
 OpenAPI documentation can be generated within the application using the command:
 
+```bash
+php util/generate-swagger.php
 ```
-composer generate-swagger
+
+### Generate Coverage Badge
+
+After running the tests with code coverage, run the following script to update the coverage badge:
+
+```bash
+php util/generate-coverage-badge.php
 ```

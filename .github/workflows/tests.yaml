@@ -30,22 +30,3 @@ jobs:
 
             -   name: Run Tests
                 run: vendor/bin/phpunit --configuration phpunit.xml
-
-            -   name: Upload code coverage report
-                if: success()
-                uses: actions/upload-artifact@v3
-                with:
-                    name: coverage-report
-                    path: target/coverage
-
-            -   name: Generate coverage badge
-                run: |
-                    COVERAGE=$(grep -o 'line-rate="[0-9]*\.[0-9]*"' target/coverage/clover.xml | head -1 | cut -d\" -f2)
-                    PERCENT=$(echo "$COVERAGE * 100" | bc | xargs printf "%.0f")
-                    curl "https://img.shields.io/badge/Coverage-${PERCENT}%25-brightgreen" > coverage-badge.svg
-
-            -   name: Upload coverage badge
-                uses: actions/upload-artifact@v3
-                with:
-                    name: coverage-badge
-                    path: coverage-badge.svg

@@ -41,7 +41,7 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "@php generate-swagger.php"
+            "@php util/generate-swagger.php"
         ]
     }
 }

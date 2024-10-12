@@ -1,13 +1,13 @@
 <?php
 /** @noinspection PhpUnused */
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use OpenApi\Generator;
 
 $paths = [
     __FILE__,
-    __DIR__ . '/src',
+    __DIR__ . '/../src',
 ];
 
 /**
@@ -21,7 +21,7 @@ try {
     $openApi = Generator::scan($paths);
 
     $jsonContent = $openApi->toJson();
-    file_put_contents(__DIR__ . '/target/api-docs.json', $jsonContent);
+    file_put_contents(__DIR__ . '/../target/api-docs.json', $jsonContent);
 
     echo "\nSwagger documentation generated successfully.\n\n";
     echo "Scanned paths: \n* " . implode("\n* ", $paths) . "\n\n";
