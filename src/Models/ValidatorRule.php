@@ -4,6 +4,7 @@ namespace ThreeLeaf\ValidationEngine\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use ThreeLeaf\ValidationEngine\Constants\ValidatorEngineConstants;
@@ -62,6 +63,7 @@ use ThreeLeaf\ValidationEngine\Enums\ActiveStatus;
 class ValidatorRule extends Model
 {
     use HasUuids;
+    use HasFactory;
 
     public const TABLE_NAME = ValidatorEngineConstants::TABLE_PREFIX . 'validator_rules';
     public const PRIMARY_KEY = 'validator_rule_id';

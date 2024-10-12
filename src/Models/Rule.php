@@ -44,11 +44,8 @@ use ThreeLeaf\ValidationEngine\Constants\ValidatorEngineConstants;
  *         property="parameters",
  *         type="object",
  *         description="JSON-encoded parameters specific to the rule type",
- *         example={
- *             "enum_class": "\ThreeLeaf\ValidationEngine\Enums\DayOfWeek",
- *             "allowed_values": ["Monday", "Wednesday", "Friday"]
- *         }
- *     ),
+ *         example={"enum_class": "\\ThreeLeaf\\ValidationEngine\\Enums\\DayOfWeek", "allowed_values": {"Monday", "Wednesday", "Friday"}}
+ *     )
  * )
  *
  * @package ThreeLeaf\Validation\Models

@@ -16,6 +16,7 @@ class ValidationServiceProvider extends ServiceProvider
      * It is called after all other service providers have been registered.
      *
      * @return void
+     * @noinspection PhpUnused
      */
     public function boot(): void
     {
