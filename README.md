@@ -7,6 +7,13 @@
 The `ValidationEngine` library provides a robust solution for managing validation rules and configurations in a dynamic manner. It allows you to define validators that group multiple rules and apply them based on various criteria, such as time and status.
 This library is particularly useful for scenarios where validation logic needs to be customized or adjusted without directly modifying the codebase.
 
+# ValidationEngine
+
+[![Tests](https://github.com/ThreeLeaf-com/ValidationEngine/actions/workflows/tests.yaml/badge.svg?branch=main)](https://github.com/ThreeLeaf-com/ValidationEngine/actions/workflows/tests.yaml?query=branch%3Amain)
+[![Latest Stable Version](https://poser.pugx.org/threeleaf/validation-engine/v/stable)](https://packagist.org/packages/threeleaf/validation-engine)
+[![Total Downloads](https://poser.pugx.org/threeleaf/validation-engine/downloads)](https://packagist.org/packages/threeleaf/validation-engine)
+[![License](https://poser.pugx.org/threeleaf/validation-engine/license)](https://packagist.org/packages/threeleaf/validation-engine)
+
 ## Installation
 
 Install the library via Composer:
