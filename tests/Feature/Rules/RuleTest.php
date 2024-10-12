@@ -6,7 +6,7 @@ use Illuminate\Container\Container;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Validator as LaravelValidator;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 use ThreeLeaf\ValidationEngine\Enums\ActiveStatus;
 use ThreeLeaf\ValidationEngine\Models\Rule;
 use ThreeLeaf\ValidationEngine\Rules\EnumRule;

@@ -7,7 +7,7 @@ use InvalidArgumentException;
 use ReflectionException;
 use ReflectionMethod;
 use ReflectionProperty;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 use ThreeLeaf\ValidationEngine\Enums\DayOfWeek;
 use ThreeLeaf\ValidationEngine\Rules\EnumRule;
 

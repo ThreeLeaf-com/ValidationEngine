@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Feature\Http\Controllers\Api;
+namespace Feature\Http\Controllers\Api;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Symfony\Component\HttpFoundation\Response as HttpCodes;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 use ThreeLeaf\ValidationEngine\Http\Controllers\Api\RuleController;
 use ThreeLeaf\ValidationEngine\Models\Rule;
 

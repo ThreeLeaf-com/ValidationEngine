@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests;
+namespace Tests\Feature;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\DB;
@@ -33,7 +33,7 @@ abstract class TestCase extends OrchestraTestCase
     {
         Route::middleware('api')
             ->prefix('api')
-            ->group(__DIR__ . '/../routes/api.php');
+            ->group(__DIR__ . '/../../routes/api.php');
     }
 
     /**

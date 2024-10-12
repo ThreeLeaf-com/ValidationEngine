@@ -3,7 +3,7 @@
 namespace Tests\Feature\Rules;
 
 use Illuminate\Support\Facades\Validator;
-use Tests\TestCase;
+use Tests\Feature\TestCase;
 use ThreeLeaf\ValidationEngine\Enums\DayOfWeek;
 use ThreeLeaf\ValidationEngine\Rules\DayTimeRule;
 
