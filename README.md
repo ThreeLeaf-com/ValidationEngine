@@ -10,11 +10,11 @@ This library is particularly useful for scenarios where validation logic needs t
 # ValidationEngine
 
 [![Latest Stable Version](https://poser.pugx.org/threeleaf/validation-engine/v/stable)](https://packagist.org/packages/threeleaf/validation-engine)
+[![GitHub last commit](https://img.shields.io/github/last-commit/ThreeLeaf-com/ValidationEngine)](https://github.com/ThreeLeaf-com/ValidationEngine/commits/main)
 [![Build Status](https://github.com/ThreeLeaf-com/ValidationEngine/actions/workflows/tests.yaml/badge.svg?branch=main)](https://github.com/ThreeLeaf-com/ValidationEngine/actions)
 ![Coverage](./public/images/coverage-badge.svg)
-[![License](https://poser.pugx.org/threeleaf/validation-engine/license)](https://packagist.org/packages/threeleaf/validation-engine)
 [![PHP Version](https://img.shields.io/packagist/php-v/threeleaf/validation-engine)](https://packagist.org/packages/threeleaf/validation-engine)
-[![GitHub last commit](https://img.shields.io/github/last-commit/ThreeLeaf-com/ValidationEngine)](https://github.com/ThreeLeaf-com/ValidationEngine/commits/main)
+[![License](https://poser.pugx.org/threeleaf/validation-engine/license)](https://packagist.org/packages/threeleaf/validation-engine)
 [![Total Downloads](https://poser.pugx.org/threeleaf/validation-engine/downloads)](https://packagist.org/packages/threeleaf/validation-engine)
 
 ## Installation
@@ -33,59 +33,67 @@ php artisan migrate
 
 ## Usage
 
-### Setting Up Validators
+### Setting Up and Use Validators
 
 To create a new validator and associate rules with it, use the `Validator` and `Rule` models:
 
 ```php
-use ThreeLeaf\ValidationEngine\Models\Validator;
-use ThreeLeaf\ValidationEngine\Models\Rule;
-use ThreeLeaf\ValidationEngine\Models\ValidatorRule;
+use Illuminate\Container\Container;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator as LaravelValidator;
+use Tests\Feature\TestCase;
 use ThreeLeaf\ValidationEngine\Enums\ActiveStatus;
+use ThreeLeaf\ValidationEngine\Models\Rule;
+use ThreeLeaf\ValidationEngine\Models\Validator;
+use ThreeLeaf\ValidationEngine\Models\ValidatorRule;
+use ThreeLeaf\ValidationEngine\Rules\EnumRule;
 
-// Create a new validator
-$validator = Validator::create([
+/* Create a new validator */
+$newValidator = Validator::create([
     'name' => 'StateAndTimeValidator',
     'description' => 'Validates state and checks time for Monday business hours.',
-    'active_status' => ActiveStatus::Active->value,
+    'active_status' => ActiveStatus::ACTIVE,
 ]);
 
-// Create a rule
-$rule = Rule::create([
-    'attribute' => 'state',
-    'rule_type' => 'EnumRule',
-    'parameters' => json_encode(['enum_class' => 'App\Enums\UsaState']),
+/* Create a rule */
+$newRule = Rule::create([
+    'attribute' => 'active_status',
+    'rule_type' => EnumRule::class,
+    'parameters' => json_encode([
+        'enumClass' => 'ThreeLeaf\\ValidationEngine\\Enums\\ActiveStatus',
+        'allowedValues' => [ActiveStatus::ACTIVE],
+    ]),
 ]);
 
-// Associate the rule with the validator
+/* Associate the rule with the validator */
 ValidatorRule::create([
-    'validator_id' => $validator->validator_id,
-    'rule_id' => $rule->rule_id,
+    'validator_id' => $newValidator->validator_id,
+    'rule_id' => $newRule->rule_id,
     'order_number' => 1,
-    'active_status' => ActiveStatus::Active->value,
+    'active_status' => ActiveStatus::INACTIVE,
 ]);
-```
 
-### Validating Data
-
-Use the `Validator` model to apply the rules to a given input:
-
-```php
-use Illuminate\Support\Facades\Validator as LaravelValidator;
-
-// Retrieve the validator
+/* Retrieve the validator */
 $validator = Validator::where('name', 'StateAndTimeValidator')->first();
 
-// Apply validation rules
-$data = ['state' => 'CA', 'date_time' => '2024-10-14 09:00:00'];
-$rules = $validator->compileRules();
+/* Extract the rule */
+$rule = $validator->rules->first->get();
 
-$laravelValidator = LaravelValidator::make($data, $rules);
+/* Retrieve the rule parameters */
+$parameters = json_decode($rule->parameters, true);
+$compiledRules = [
+    $rule->attribute => [Container::getInstance()->makeWith(EnumRule::class, $parameters)],
+];
 
-if ($laravelValidator->fails()) {
-    echo "Validation failed: " . $laravelValidator->errors()->first();
-} else {
-    echo "Validation passed!";
+/* Serialize the value you want to validate. */
+$data = ['active_status' => ActiveStatus::ACTIVE->value];
+
+/* Create the validator */
+$validator = LaravelValidator::make($data, $compiledRules);
+
+if ($validator->passes()) {
+    Log::info('Success!');
 }
 ```
 

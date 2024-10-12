@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Rules;
+namespace Tests\Feature\Models;
 
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -42,7 +42,7 @@ class RuleTest extends TestCase
      */
     public function ruleRehydration()
     {
-        // Create a new Rule with an EnumRule type for ActiveStatus and store it in the database.
+        /* Create a new Rule with an EnumRule type for ActiveStatus and store it in the database. */
         $rule = Rule::create([
             'attribute' => 'active_status',
             'rule_type' => EnumRule::class,
