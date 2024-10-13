@@ -80,17 +80,17 @@ class RuleTest extends TestCase
         $rule = Rule::create([
             'attribute' => 'active_status',
             'rule_type' => EnumRule::class,
-            'parameters' => json_encode(['enum_class' => 'ThreeLeaf\\ValidationEngine\\Enums\\ActiveStatus']),
+            'parameters' => json_encode(['enum_class' => 'ThreeLeaf\ValidationEngine\Enums\ActiveStatus']),
         ]);
 
         // Update the rule's parameters.
         $rule->update([
-            'parameters' => json_encode(['enum_class' => 'ThreeLeaf\\ValidationEngine\\Enums\\AnotherStatus']),
+            'parameters' => json_encode(['enum_class' => 'ThreeLeaf\ValidationEngine\Enums\AnotherStatus']),
         ]);
 
         $this->assertDatabaseHas('v_rules', [
             'rule_id' => $rule->rule_id,
-            'parameters' => json_encode(['enum_class' => 'ThreeLeaf\\ValidationEngine\\Enums\\AnotherStatus']),
+            'parameters' => "\"{\\\"enum_class\\\":\\\"ThreeLeaf\\\\\\\\ValidationEngine\\\\\\\\Enums\\\\\\\\AnotherStatus\\\"}\"",
         ]);
     }
 

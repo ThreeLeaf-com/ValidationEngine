@@ -27,7 +27,6 @@ class ValidatorFactory extends Factory
     public function definition(): array
     {
         return [
-            'validator_id' => $this->faker->uuid,
             'name' => $this->faker->unique()->word,
             'description' => $this->faker->sentence,
         ];

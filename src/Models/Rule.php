@@ -2,10 +2,12 @@
 
 namespace ThreeLeaf\ValidationEngine\Models;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use ThreeLeaf\ValidationEngine\Casts\ClassCast;
 use ThreeLeaf\ValidationEngine\Constants\ValidatorEngineConstants;
 
 /**
@@ -13,7 +15,7 @@ use ThreeLeaf\ValidationEngine\Constants\ValidatorEngineConstants;
  *
  * @property string $rule_id    The unique ID of the rule
  * @property string $attribute  The attribute being validated, e.g., 'state' or 'date_time'
- * @property string $rule_type  The type or class of the rule, e.g., '\ThreeLeaf\ValidationEngine\Rules\EnumRule', '\ThreeLeaf\ValidationEngine\Rules\DayTimeRule'
+ * @property string $rule_type  The {@link ValidationRule} type or class of the rule, e.g., '\ThreeLeaf\ValidationEngine\Rules\EnumRule', '\ThreeLeaf\ValidationEngine\Rules\DayTimeRule'
  * @property string $parameters JSON-encoded parameters specific to the rule type
  *
  * @mixin Builder
@@ -68,5 +70,10 @@ class Rule extends Model
         'attribute',
         'rule_type',
         'parameters',
+    ];
+
+    protected $casts = [
+        'rule_type' => ClassCast::class . ':' . ValidationRule::class,
+        'parameters' => 'json',
     ];
 }

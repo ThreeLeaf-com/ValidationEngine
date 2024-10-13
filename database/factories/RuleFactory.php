@@ -27,7 +27,6 @@ class RuleFactory extends Factory
     public function definition(): array
     {
         return [
-            'rule_id' => $this->faker->uuid,
             'attribute' => $this->faker->randomElement(['status']),
             'rule_type' => $this->faker->randomElement(['\ThreeLeaf\ValidationEngine\Rules\EnumRule']),
             'parameters' => json_encode([

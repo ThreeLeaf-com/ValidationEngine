@@ -3,8 +3,9 @@
 namespace ThreeLeaf\ValidationEngine\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rule as ValidationRule;
 use ThreeLeaf\ValidationEngine\Enums\ActiveStatus;
+use ThreeLeaf\ValidationEngine\Models\Rule;
 use ThreeLeaf\ValidationEngine\Models\Validator;
 use ThreeLeaf\ValidationEngine\Models\ValidatorRule;
 
@@ -37,7 +38,7 @@ class ValidatorRuleRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, Rule|array|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
@@ -46,14 +47,14 @@ class ValidatorRuleRequest extends FormRequest
                 'required',
                 'integer',
                 'min:1',
-                Rule::unique(ValidatorRule::TABLE_NAME)->where(function ($query) {
-                    return $query->where(Validator::PRIMARY_KEY, $this->validator_id);
-                })->ignore($this->route('validator_rule')),
+                ValidationRule::unique(ValidatorRule::TABLE_NAME)
+                    ->where('validator_id', $this->validator_id)
+                    ->ignore($this->rule_id, 'rule_id'),
             ],
             'active_status' => [
                 'required',
                 'string',
-                Rule::enum(ActiveStatus::class),
+                ValidationRule::enum(ActiveStatus::class),
             ],
         ];
 
@@ -61,30 +62,27 @@ class ValidatorRuleRequest extends FormRequest
             $rules['validator_id'] = [
                 'required',
                 'uuid',
-                Rule::exists(Validator::TABLE_NAME, Validator::PRIMARY_KEY),
+                ValidationRule::exists(Validator::TABLE_NAME, Validator::PRIMARY_KEY),
             ];
             $rules['rule_id'] = [
                 'required',
                 'uuid',
-                Rule::exists(\ThreeLeaf\ValidationEngine\Models\Rule::TABLE_NAME, \ThreeLeaf\ValidationEngine\Models\Rule::PRIMARY_KEY),
-                Rule::unique(ValidatorRule::TABLE_NAME)->where(function ($query) {
-                    return $query->where(Validator::PRIMARY_KEY, $this->validator_id);
-                }),
+                ValidationRule::exists(Rule::TABLE_NAME, Rule::PRIMARY_KEY),
+                ValidationRule::unique(ValidatorRule::TABLE_NAME)
+                    ->where('validator_id', $this->validator_id),
             ];
         } elseif ($this->isMethod('PUT') || $this->isMethod('PATCH')) {
-            $validatorRule = $this->route('validator_rule');
-
             $rules['validator_id'] = [
-                'sometimes',
+                'required',
                 'uuid',
-                Rule::exists(Validator::TABLE_NAME, Validator::PRIMARY_KEY),
-                Rule::in([$validatorRule->validator_id]),
+                ValidationRule::exists(Validator::TABLE_NAME, Validator::PRIMARY_KEY),
+                ValidationRule::in([$this->route('validator_id')]),
             ];
             $rules['rule_id'] = [
-                'sometimes',
+                'required',
                 'uuid',
-                Rule::exists(\ThreeLeaf\ValidationEngine\Models\Rule::TABLE_NAME, \ThreeLeaf\ValidationEngine\Models\Rule::PRIMARY_KEY),
-                Rule::in([$validatorRule->rule_id]),
+                ValidationRule::exists(Rule::TABLE_NAME, Rule::PRIMARY_KEY),
+                ValidationRule::in([$this->route('rule_id')]),
             ];
         }
 

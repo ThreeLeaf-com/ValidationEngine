@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Http\Controllers\Api;
+namespace Tests\Feature\Http\Controllers\Api;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Symfony\Component\HttpFoundation\Response as HttpCodes;
@@ -39,13 +39,19 @@ class ValidatorRuleControllerTest extends TestCase
             'active_status' => ActiveStatus::INACTIVE,
         ];
 
-        $this->assertDatabaseMissing(ValidatorRule::TABLE_NAME, [Validator::PRIMARY_KEY => $validator->validator_id]);
+        $this->assertDatabaseMissing(ValidatorRule::TABLE_NAME, [
+            Validator::PRIMARY_KEY => $validator->validator_id,
+            Rule::PRIMARY_KEY => $rule->rule_id,
+        ]);
 
         $response = $this->postJson('/api/validator-rules', $data);
 
         $response->assertStatus(HttpCodes::HTTP_CREATED);
         $response->assertJsonFragment($data);
-        $this->assertDatabaseHas(ValidatorRule::TABLE_NAME, [Validator::PRIMARY_KEY => $validator->validator_id]);
+        $this->assertDatabaseHas(ValidatorRule::TABLE_NAME, [
+            Validator::PRIMARY_KEY => $validator->validator_id,
+            Rule::PRIMARY_KEY => $rule->rule_id,
+        ]);
     }
 
     /** @test {@link ValidatorRuleController::store()} with invalid Validator or Rule UUID. */
@@ -68,10 +74,13 @@ class ValidatorRuleControllerTest extends TestCase
     {
         $validatorRule = ValidatorRule::factory()->create();
 
-        $response = $this->getJson("/api/validator-rules/$validatorRule->validator_rule_id");
+        $response = $this->getJson("/api/validator-rules/$validatorRule->validator_id/$validatorRule->rule_id");
 
         $response->assertStatus(HttpCodes::HTTP_OK);
-        $response->assertJsonFragment([ValidatorRule::PRIMARY_KEY => $validatorRule->validator_rule_id]);
+        $response->assertJsonFragment([
+            Validator::PRIMARY_KEY => $validatorRule->validator_id,
+            Rule::PRIMARY_KEY => $validatorRule->rule_id,
+        ]);
     }
 
     /** @test {@link ValidatorRuleController::update()}. */
@@ -80,13 +89,15 @@ class ValidatorRuleControllerTest extends TestCase
         $validatorRule = ValidatorRule::factory()->create(['order_number' => 1]);
 
         $updatedData = [
+            Validator::PRIMARY_KEY => $validatorRule->validator_id,
+            Rule::PRIMARY_KEY => $validatorRule->rule_id,
             'order_number' => 2,
             'active_status' => ActiveStatus::ACTIVE,
         ];
 
         $this->assertDatabaseMissing(ValidatorRule::TABLE_NAME, ['order_number' => 2]);
 
-        $response = $this->putJson("/api/validator-rules/$validatorRule->validator_rule_id", $updatedData);
+        $response = $this->putJson("/api/validator-rules/$validatorRule->validator_id/$validatorRule->rule_id", $updatedData);
 
         $response->assertStatus(HttpCodes::HTTP_OK);
         $response->assertJsonFragment($updatedData);
@@ -98,11 +109,17 @@ class ValidatorRuleControllerTest extends TestCase
     {
         $validatorRule = ValidatorRule::factory()->create();
 
-        $this->assertDatabaseHas(ValidatorRule::TABLE_NAME, [ValidatorRule::PRIMARY_KEY => $validatorRule->validator_rule_id]);
+        $this->assertDatabaseHas(ValidatorRule::TABLE_NAME, [
+            Validator::PRIMARY_KEY => $validatorRule->validator_id,
+            Rule::PRIMARY_KEY => $validatorRule->rule_id,
+        ]);
 
-        $response = $this->deleteJson("/api/validator-rules/$validatorRule->validator_rule_id");
+        $response = $this->deleteJson("/api/validator-rules/$validatorRule->validator_id/$validatorRule->rule_id");
 
         $response->assertStatus(HttpCodes::HTTP_NO_CONTENT);
-        $this->assertDatabaseMissing(ValidatorRule::TABLE_NAME, [ValidatorRule::PRIMARY_KEY => $validatorRule->validator_rule_id]);
+        $this->assertDatabaseMissing(ValidatorRule::TABLE_NAME, [
+            Validator::PRIMARY_KEY => $validatorRule->validator_id,
+            Rule::PRIMARY_KEY => $validatorRule->rule_id,
+        ]);
     }
 }

@@ -1,12 +1,13 @@
 <?php
 
-namespace Feature\Http\Controllers\Api;
+namespace Tests\Feature\Http\Controllers\Api;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Symfony\Component\HttpFoundation\Response as HttpCodes;
 use Tests\Feature\TestCase;
 use ThreeLeaf\ValidationEngine\Http\Controllers\Api\RuleController;
 use ThreeLeaf\ValidationEngine\Models\Rule;
+use ThreeLeaf\ValidationEngine\Rules\EnumRule;
 
 /** Test {@link RuleController}. */
 class RuleControllerTest extends TestCase
@@ -29,7 +30,7 @@ class RuleControllerTest extends TestCase
     {
         $data = [
             'attribute' => 'status',
-            'rule_type' => 'EnumRule',
+            'rule_type' => EnumRule::class,
             'parameters' => json_encode(['enum_class' => 'App\\Enums\\StatusEnum']),
         ];
 
@@ -58,7 +59,7 @@ class RuleControllerTest extends TestCase
 
         $updatedData = [
             'attribute' => 'updated_attribute',
-            'rule_type' => 'EnumRule',
+            'rule_type' => EnumRule::class,
             'parameters' => json_encode(['enum_class' => 'App\\Enums\\UpdatedEnum']),
         ];
 

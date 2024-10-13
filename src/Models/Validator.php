@@ -17,6 +17,7 @@ use ThreeLeaf\ValidationEngine\Enums\ActiveStatus;
  * @property string             $validator_id  The unique ID of the validator
  * @property string             $name          The unique name of the validator
  * @property string|null        $description   A brief description of the validator
+ * @property string|null        $context       The context of the validator (e.g., can be used to help retrieve a set of related validators)
  * @property ActiveStatus       $active_status Whether the validator is currently active.
  * @property-read HasMany<Rule> $rules         The rules associated with this validator.
  *
@@ -46,6 +47,13 @@ use ThreeLeaf\ValidationEngine\Enums\ActiveStatus;
  *         example="Validates state and checks time for Monday business hours"
  *     ),
  *     @OA\Property(
+ *         property="context",
+ *         type="string",
+ *         nullable=true,
+ *         description="The context of the validator",
+ *         example="verify-customer-data"
+ *     ),
+ *     @OA\Property(
  *         property="active_status",
  *         ref="#/components/schemas/ActiveStatus",
  *         description="The active status of the validator, indicating whether it is active or inactive."
@@ -71,6 +79,7 @@ class Validator extends Model
     protected $fillable = [
         'name',
         'description',
+        'context',
         'active_status',
     ];
 

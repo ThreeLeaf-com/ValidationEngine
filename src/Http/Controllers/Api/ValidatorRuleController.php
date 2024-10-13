@@ -78,56 +78,29 @@ class ValidatorRuleController extends Controller
     /**
      * Display the specified validator rule.
      *
-     * @param ValidatorRule $validatorRule
+     *
+     * @param string $validator_id
+     * @param string $rule_id
      *
      * @return JsonResponse
      *
      * @OA\Get(
-     *     path="/api/validator-rules/{validator_rule_id}",
+     *     path="/api/validator-rules/{validator_id}/{rule_id}",
      *     summary="Get a validator rule by ID",
      *     tags={"ValidationEngine/Validator Rules"},
      *     @OA\Parameter(
-     *         name="validator_rule_id",
+     *         name="validator_id",
      *         in="path",
      *         required=true,
-     *         description="The validator rule ID",
-     *         @OA\Schema(type="string")
+     *         description="Validator ID",
+     *         @OA\Schema(type="string", format="uuid")
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Success",
-     *         @OA\JsonContent(ref="#/components/schemas/ValidatorRule")
-     *     )
-     * )
-     */
-    public function show(ValidatorRule $validatorRule): JsonResponse
-    {
-        return response()->json($validatorRule);
-    }
-
-    /**
-     * Update the specified validator rule in the database.
-     *
-     * @param ValidatorRuleRequest $request
-     * @param ValidatorRule        $validatorRule
-     *
-     * @return JsonResponse
-     *
-     * @OA\Put(
-     *     path="/api/validator-rules/{validator_rule_id}",
-     *     summary="Update an existing validator rule",
-     *     tags={"ValidationEngine/Validator Rules"},
      *     @OA\Parameter(
-     *         name="validator_rule_id",
+     *         name="rule_id",
      *         in="path",
      *         required=true,
-     *         description="The validator rule ID",
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         description="Validator rule data",
-     *         @OA\JsonContent(ref="#/components/schemas/ValidatorRuleRequest")
+     *         description="Rule ID",
+     *         @OA\Schema(type="string", format="uuid")
      *     ),
      *     @OA\Response(
      *         response=200,
@@ -140,9 +113,70 @@ class ValidatorRuleController extends Controller
      *     )
      * )
      */
-    public function update(ValidatorRuleRequest $request, ValidatorRule $validatorRule): JsonResponse
+    public function show(string $validator_id, string $rule_id): JsonResponse
     {
-        $validatorRule->update($request->validated());
+        $validatorRule = ValidatorRule::where('validator_id', $validator_id)
+            ->where('rule_id', $rule_id)
+            ->firstOrFail();
+
+        return response()->json($validatorRule);
+    }
+
+    /**
+     * Update the specified validator rule in the database.
+     *
+     * @param ValidatorRuleRequest $request
+     * @param string               $validator_id
+     * @param string               $rule_id
+     *
+     * @return JsonResponse
+     *
+     * @OA\Put(
+     *     path="/api/validator-rules/{validator_id}/{rule_id}",
+     *     summary="Update an existing validator rule",
+     *     tags={"ValidationEngine/Validator Rules"},
+     *         name="validator_id",
+     *         in="path",
+     *         required=true,
+     *         description="Validator ID",
+     *         @OA\Schema(type="string", format="uuid")
+     *     ),
+     * @OA\Parameter(
+     *         name="rule_id",
+     *         in="path",
+     *         required=true,
+     *         description="Rule ID",
+     *         @OA\Schema(type="string", format="uuid")
+     *     ),
+     * @OA\RequestBody(
+     *         required=true,
+     *          description='Updated ValidatorRule object',
+     *         @OA\JsonContent(ref="#/components/schemas/ValidatorRule")
+     *     ),
+     * @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(ref="#/components/schemas/ValidatorRule")
+     *     ),
+     * @OA\Response(
+     *         response=404,
+     *         description="Not found"
+     *     ),
+     * @OA\Response(
+     *         response=422,
+     *         description="Validation Error"
+     *     )
+     * )
+     */
+    public function update(ValidatorRuleRequest $request, string $validator_id, string $rule_id): JsonResponse
+    {
+        $validatorRule = ValidatorRule::where('validator_id', $validator_id)
+            ->where('rule_id', $rule_id)
+            ->firstOrFail();
+
+        $validatedData = $request->validated();
+
+        $validatorRule->update($validatedData);
 
         return response()->json($validatorRule);
     }
@@ -150,20 +184,28 @@ class ValidatorRuleController extends Controller
     /**
      * Remove the specified validator rule from the database.
      *
-     * @param ValidatorRule $validatorRule
+     * @param string $validator_id
+     * @param string $rule_id
      *
      * @return JsonResponse
      *
      * @OA\Delete(
-     *     path="/api/validator-rules/{validator_rule}",
+     *     path="/api/validator-rules/{validator_id}/{rule_id}",
      *     summary="Delete a validator rule",
      *     tags={"ValidationEngine/Validator Rules"},
      *     @OA\Parameter(
-     *         name="validator_rule_id",
+     *         name="validator_id",
      *         in="path",
      *         required=true,
-     *         description="The validator rule ID",
-     *         @OA\Schema(type="string")
+     *         description="Validator ID",
+     *         @OA\Schema(type="string", format="uuid")
+     *     ),
+     *     @OA\Parameter(
+     *         name="rule_id",
+     *         in="path",
+     *         required=true,
+     *         description="Rule ID",
+     *         @OA\Schema(type="string", format="uuid")
      *     ),
      *     @OA\Response(
      *         response=204,
@@ -175,8 +217,12 @@ class ValidatorRuleController extends Controller
      *     )
      * )
      */
-    public function destroy(ValidatorRule $validatorRule): JsonResponse
+    public function destroy(string $validator_id, string $rule_id): JsonResponse
     {
+        $validatorRule = ValidatorRule::where('validator_id', $validator_id)
+            ->where('rule_id', $rule_id)
+            ->firstOrFail();
+
         $validatorRule->delete();
 
         return response()->json(null, HttpCodes::HTTP_NO_CONTENT);
