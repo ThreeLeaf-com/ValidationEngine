@@ -135,34 +135,35 @@ class ValidatorRuleController extends Controller
      *     path="/api/validator-rules/{validator_id}/{rule_id}",
      *     summary="Update an existing validator rule",
      *     tags={"ValidationEngine/Validator Rules"},
+     *     @OA\Parameter(
      *         name="validator_id",
      *         in="path",
      *         required=true,
      *         description="Validator ID",
      *         @OA\Schema(type="string", format="uuid")
      *     ),
-     * @OA\Parameter(
+     *     @OA\Parameter(
      *         name="rule_id",
      *         in="path",
      *         required=true,
      *         description="Rule ID",
      *         @OA\Schema(type="string", format="uuid")
      *     ),
-     * @OA\RequestBody(
+     *     @OA\RequestBody(
      *         required=true,
-     *          description='Updated ValidatorRule object',
+     *         description="Updated ValidatorRule object",
      *         @OA\JsonContent(ref="#/components/schemas/ValidatorRule")
      *     ),
-     * @OA\Response(
+     *     @OA\Response(
      *         response=200,
      *         description="Successful operation",
      *         @OA\JsonContent(ref="#/components/schemas/ValidatorRule")
      *     ),
-     * @OA\Response(
+     *     @OA\Response(
      *         response=404,
      *         description="Not found"
      *     ),
-     * @OA\Response(
+     *     @OA\Response(
      *         response=422,
      *         description="Validation Error"
      *     )

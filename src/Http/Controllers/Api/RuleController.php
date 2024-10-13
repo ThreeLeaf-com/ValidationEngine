@@ -126,7 +126,7 @@ class RuleController extends Controller
      *     ),
      *     @OA\RequestBody(
      *         required=true,
-     *          description="Rule data",
+     *         description="Rule data",
      *         @OA\JsonContent(ref="#/components/schemas/RuleRequest")
      *     ),
      *     @OA\Response(

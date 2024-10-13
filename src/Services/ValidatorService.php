@@ -17,17 +17,17 @@ class ValidatorService
     /**
      * Runs a {@link Validator} against the provided data.
      *
-     * @param string $id   The {@link Validator::$validator_id} or {@link Validator::name}
-     * @param array  $data The data to validate
+     * @param string $validator_id The {@link Validator::$validator_id} or {@link Validator::name}
+     * @param array  $data         The data to validate
      *
      * @return bool true, if the data is valid
      */
-    public function runValidator(string $id, array $data): bool
+    public function runValidator(string $validator_id, array $data): bool
     {
         $validator = Validator::where('active_status', ActiveStatus::ACTIVE)
-            ->where(function ($query) use ($id) {
-                $query->where('validator_id', $id)
-                    ->orWhere('name', $id);
+            ->where(function ($query) use ($validator_id) {
+                $query->where('validator_id', $validator_id)
+                    ->orWhere('name', $validator_id);
             })
             ->first();
 
