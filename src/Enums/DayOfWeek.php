@@ -35,4 +35,22 @@ enum DayOfWeek: string
     case WEEKEND = 'Weekend';
     case WEEKDAY = 'Weekday';
     case ALL = 'All';
+
+    /**
+     * Returns only the seven days of the week.
+     *
+     * @return array<DayOfWeek>
+     */
+    public static function days(): array
+    {
+        return [
+            self::MONDAY,
+            self::TUESDAY,
+            self::WEDNESDAY,
+            self::THURSDAY,
+            self::FRIDAY,
+            self::SATURDAY,
+            self::SUNDAY,
+        ];
+    }
 }
