@@ -8,7 +8,7 @@ use ThreeLeaf\ValidationEngine\Enums\DayOfWeek;
 
 /**
  * A validation rule that checks if a given date falls within a specified day of the week,
- * with support for various day types such as specific days (e.g., "Monday"), "Weekend", "Weekday", or "All".
+ * with support for various day types such as specific days (e.g., "Monday", "Weekend", "Weekday", or "All").
  *
  * @property DayOfWeek $dayOfWeek The day of the week to validate against
  * @property string    $timezone  The timezone to be used for validation
@@ -49,16 +49,14 @@ class DayOfWeekRule extends ValidationEngineRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        // Use the default timezone if no value is passed
         if (empty($value)) {
             $value = Carbon::now($this->timezone);
         } else {
             $value = Carbon::parse($value)->setTimezone($this->timezone);
         }
 
-        $currentDay = $value->format('l'); // Full textual day format
+        $currentDay = $value->format('l');
 
-        // Trigger the fail closure if the current day does not match the expected day
         if (!$this->dayMatches($currentDay)) {
             $fail("The $attribute is not within the allowed day-of-week: {$this->dayOfWeek->value}.");
         }

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use InvalidArgumentException;
 use ThreeLeaf\ValidationEngine\Casts\ClassCast;
 use ThreeLeaf\ValidationEngine\Constants\ValidatorEngineConstants;
 use ThreeLeaf\ValidationEngine\Rules\ValidationEngineRule;
@@ -52,7 +53,6 @@ use ThreeLeaf\ValidationEngine\Rules\ValidationEngineRule;
  */
 class Rule extends Model
 {
-
     use HasUuids;
     use HasFactory;
 
@@ -74,4 +74,19 @@ class Rule extends Model
         'rule_type' => ClassCast::class . ':' . ValidationEngineRule::class,
         'parameters' => 'json',
     ];
+
+    /**
+     * Instantiate the corresponding ValidationEngineRule using the stored rule_type and parameters.
+     *
+     * @return ValidationEngineRule
+     * @throws InvalidArgumentException
+     */
+    public function instantiateRule(): ValidationEngineRule
+    {
+        if (!class_exists($this->rule_type) || !is_subclass_of($this->rule_type, ValidationEngineRule::class)) {
+            throw new InvalidArgumentException("Invalid rule type: {$this->rule_type} must extend ValidationEngineRule.");
+        }
+
+        return $this->rule_type::make($this->parameters);
+    }
 }

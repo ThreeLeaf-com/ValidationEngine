@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Validator as LaravelValidator;
 use Tests\Feature\TestCase;
 use ThreeLeaf\ValidationEngine\Enums\ActiveStatus;
+use ThreeLeaf\ValidationEngine\Enums\DayOfWeek;
 use ThreeLeaf\ValidationEngine\Models\Rule;
 use ThreeLeaf\ValidationEngine\Rules\EnumRule;
 
@@ -109,5 +110,26 @@ class RuleTest extends TestCase
         $this->assertDatabaseMissing('v_rules', [
             'rule_id' => $ruleId,
         ]);
+    }
+
+    /**  @test {@link Rule::instantiateRule()}. */
+    public function testRuleInstantiation()
+    {
+        $ruleData = [
+            'attribute' => 'dayOfWeek',
+            'rule_type' => EnumRule::class,
+            'parameters' => [
+                'enumClass' => DayOfWeek::class,
+                'allowedValues' => ['Monday', 'Wednesday', 'Friday'],
+            ],
+        ];
+
+        $rule = Rule::create($ruleData);
+
+        $validationRule = $rule->instantiateRule();
+
+        $this->assertInstanceOf(EnumRule::class, $validationRule);
+        $this->assertSame(DayOfWeek::class, $validationRule->enumClass);
+        $this->assertSame(['Monday', 'Wednesday', 'Friday'], $validationRule->allowedValues);
     }
 }
