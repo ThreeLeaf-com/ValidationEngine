@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Validator;
 use InvalidArgumentException;
 use ReflectionException;
 use ReflectionMethod;
-use ReflectionProperty;
 use Tests\Feature\TestCase;
 use ThreeLeaf\ValidationEngine\Enums\DayOfWeek;
 use ThreeLeaf\ValidationEngine\Rules\EnumRule;
@@ -102,7 +101,10 @@ class EnumRuleTest extends TestCase
     /** @test that a value outside the allowed subset fails. */
     public function testValueOutsideSubsetFails()
     {
-        $rule = new EnumRule(DayOfWeek::class, [DayOfWeek::MONDAY, DayOfWeek::TUESDAY]);
+        $rule = EnumRule::make([
+            'allowedValues' => [DayOfWeek::MONDAY, DayOfWeek::TUESDAY],
+            'enumClass' => DayOfWeek::class,
+        ]);
 
         $validator = Validator::make(
             ['day' => 'Wednesday'],
@@ -151,9 +153,7 @@ class EnumRuleTest extends TestCase
         $enumRule = new EnumRule(DayOfWeek::class);
 
         /* Step 2: Use reflection to inject a fake enum class that will force an exception. */
-        $reflectionProperty = new ReflectionProperty(EnumRule::class, 'enumClass');
-        $reflectionProperty->setAccessible(true);
-        $reflectionProperty->setValue($enumRule, 'Tests\Unit\Rules\FakeEnum');
+        $enumRule->enumClass = 'Tests\Unit\Rules\FakeEnum';
 
         /* Step 3: Define a fake class that should cause a failure when treated as an enum. */
         if (!class_exists('Tests\Unit\Rules\FakeEnum')) {

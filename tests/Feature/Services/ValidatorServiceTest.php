@@ -53,7 +53,7 @@ class ValidatorServiceTest extends TestCase
 
         $this->validatorService = $this->app->make(ValidatorService::class);
 
-        $isValid = $this->validatorService->runValidator($validator->validator_id, ['name' => 'valid']);
+        $isValid = $this->validatorService->runValidatorById($validator->validator_id, ['name' => 'valid']);
         $this->assertTrue($isValid, 'The data should be valid for the given validator and rule set.');
     }
 
@@ -91,7 +91,7 @@ class ValidatorServiceTest extends TestCase
 
         $this->validatorService = $this->app->make(ValidatorService::class);
 
-        $isValid = $this->validatorService->runValidator($validator->validator_id, ['name' => null]);
+        $isValid = $this->validatorService->runValidatorById($validator->validator_id, ['name' => null]);
         $this->assertFalse($isValid, 'The data should be invalid for the given validator and rule set.');
     }
 
@@ -106,7 +106,7 @@ class ValidatorServiceTest extends TestCase
         $this->validatorService = $this->app->make(ValidatorService::class);
 
         // Non-existent validator ID
-        $isValid = $this->validatorService->runValidator('non-existent-uuid', ['name' => 'value']);
+        $isValid = $this->validatorService->runValidatorById('non-existent-uuid', ['name' => 'value']);
         $this->assertFalse($isValid, 'The validation should fail with a non-existent validator.');
     }
 
@@ -127,7 +127,7 @@ class ValidatorServiceTest extends TestCase
 
         $this->validatorService = $this->app->make(ValidatorService::class);
 
-        $isValid = $this->validatorService->runValidator($validator->validator_id, ['name' => 'value']);
+        $isValid = $this->validatorService->runValidatorById($validator->validator_id, ['name' => 'value']);
         $this->assertFalse($isValid, 'The validation should fail because the validator is inactive.');
     }
 

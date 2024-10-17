@@ -56,7 +56,7 @@ class ValidatorTest extends TestCase
     {
         $validator = Validator::factory()->create();
 
-        $response = $this->getJson("/api/validators/{$validator->validator_id}");
+        $response = $this->getJson("/api/validators/$validator->validator_id");
 
         $response->assertStatus(HttpCodes::HTTP_OK);
         $response->assertJsonFragment(['name' => $validator->name]);
@@ -76,7 +76,7 @@ class ValidatorTest extends TestCase
             'description' => 'Updated description',
         ];
 
-        $response = $this->putJson("/api/validators/{$validator->validator_id}", $updatedData);
+        $response = $this->putJson("/api/validators/$validator->validator_id", $updatedData);
 
         $response->assertStatus(HttpCodes::HTTP_OK);
         $response->assertJsonFragment($updatedData);
@@ -92,7 +92,7 @@ class ValidatorTest extends TestCase
     {
         $validator = Validator::factory()->create();
 
-        $response = $this->deleteJson("/api/validators/{$validator->validator_id}");
+        $response = $this->deleteJson("/api/validators/$validator->validator_id");
 
         $response->assertStatus(HttpCodes::HTTP_NO_CONTENT);
         $this->assertDatabaseMissing(VAlidator::TABLE_NAME, ['validator_id' => $validator->validator_id]);

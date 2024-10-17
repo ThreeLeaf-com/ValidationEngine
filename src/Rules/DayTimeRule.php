@@ -3,7 +3,6 @@
 namespace ThreeLeaf\ValidationEngine\Rules;
 
 use Closure;
-use Illuminate\Contracts\Validation\ValidationRule;
 use ThreeLeaf\ValidationEngine\Enums\DayOfWeek;
 
 /**
@@ -21,20 +20,14 @@ use ThreeLeaf\ValidationEngine\Enums\DayOfWeek;
  * Example with manual fail Closure:
  *
  * ```php
- * // Manually define a fail Closure to handle validation failures
  * $failed = false;
  * $message = '';
- *
  * $fail = function ($msg) use (&$failed, &$message) {
- *     $failed = true; // Set failed to true to indicate a validation failure
- *     $message = $msg; // Store the failure message
+ *     $failed = true;
+ *     $message = $msg;
  * };
- *
- * // Simulate validating a value
- * $value = '2024-10-14 18:00:00'; // A time outside the allowed range on a Monday
+ * $value = '2024-10-14 18:00:00';
  * $rule->validate('date_time', $value, $fail);
- *
- * // Check the outcome
  * if ($failed) {
  *     echo "Validation failed: {$message}";
  * } else {
@@ -53,27 +46,30 @@ use ThreeLeaf\ValidationEngine\Enums\DayOfWeek;
  *
  * if ($validator->fails()) {
  *     echo "Validation failed: " . $validator->errors()->first('dateTime');
- * } else { // $validator->passes()
+ * } else {
  *     echo "Validation passed.";
  * }
  * ```
  *
  * @see DayOfWeekRule
  * @see TimeOfDayRule
- *
- * @mixin ValidationRule
  */
-class DayTimeRule implements ValidationRule
+class DayTimeRule extends ValidationEngineRule
 {
+    /**
+     * @var DayOfWeekRule The rule that validates the day of the week.
+     */
     private DayOfWeekRule $dayOfWeekRule;
 
+    /**
+     * @var TimeOfDayRule The rule that validates the time of the day.
+     */
     private TimeOfDayRule $timeOfDayRule;
 
     /**
      * Create a new DayTimeRule instance.
      *
      * The default day and time range, if no parameters are used, is 24/7 (24 hours a day, 7 days a week).
-     *
      *
      * @param DayOfWeek $dayOfWeek The day of the week to validate against
      * @param string    $startTime The start time (HH:MM format)
@@ -87,12 +83,15 @@ class DayTimeRule implements ValidationRule
         string    $timezone = 'UTC',
     )
     {
-        $this->dayOfWeekRule = new DayOfWeekRule($dayOfWeek);
+        // Initialize the individual day and time rules
+        $this->dayOfWeekRule = new DayOfWeekRule($dayOfWeek, $timezone);
         $this->timeOfDayRule = new TimeOfDayRule($startTime, $endTime, $timezone);
     }
 
     /**
-     * Validate the given attribute.
+     * Validate if the given value falls within the specified day of the week and time range.
+     *
+     * {@inheritDoc}
      *
      * @param string  $attribute The name of the attribute being validated
      * @param mixed   $value     The date: Expected to be a Carbon instance or a date string
@@ -102,7 +101,21 @@ class DayTimeRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+        // Validate the day of the week
         $this->dayOfWeekRule->validate($attribute, $value, $fail);
+
+        // Validate the time of the day
         $this->timeOfDayRule->validate($attribute, $value, $fail);
+    }
+
+    /**
+     * Convert the properties of both DayOfWeekRule and TimeOfDayRule into an array.
+     *
+     * @return array An array of the combined properties from the day and time rules.
+     */
+    public function toArray(): array
+    {
+        // Merge the arrays from both rules for unified access
+        return array_merge($this->dayOfWeekRule->toArray(), $this->timeOfDayRule->toArray());
     }
 }

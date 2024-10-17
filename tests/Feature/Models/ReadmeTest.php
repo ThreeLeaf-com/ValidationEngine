@@ -3,6 +3,7 @@
 namespace Tests\Feature\Models;
 
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator as LaravelValidator;
@@ -18,7 +19,10 @@ class ReadmeTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test {@link Rule::create()}. */
+    /**
+     * @test {@link Rule::create()}.
+     * @throws BindingResolutionException
+     */
     public function ruleCreate()
     {
         /* Create a new validator */

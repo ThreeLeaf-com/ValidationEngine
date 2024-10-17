@@ -78,7 +78,9 @@ class EnumRuleTest extends TestCase
             $message = $msg;
         };
 
-        /* 'Tuesday' is not in the allowed subset. */
+        $this->assertFalse($rule->isValidFor(DayOfWeek::SATURDAY));
+
+        /* 'Wednesday' is not in the allowed subset. */
         $rule->validate('day', 'Wednesday', $fail);
 
         $this->assertTrue($failed, 'Validation should fail when the value is outside the allowed subset.');

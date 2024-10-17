@@ -243,7 +243,7 @@ class ValidatorController extends Controller
         $data = $request->all();
 
         try {
-            $isValid = $this->validatorService->runValidator($validator_id, $data);
+            $isValid = $this->validatorService->runValidatorById($validator_id, $data);
             if ($isValid) {
                 return response()->json(['success' => true], HttpCodes::HTTP_OK);
             } else {

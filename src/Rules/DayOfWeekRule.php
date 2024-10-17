@@ -4,12 +4,14 @@ namespace ThreeLeaf\ValidationEngine\Rules;
 
 use Carbon\Carbon;
 use Closure;
-use Illuminate\Contracts\Validation\ValidationRule;
 use ThreeLeaf\ValidationEngine\Enums\DayOfWeek;
 
 /**
  * A validation rule that checks if a given date falls within a specified day of the week,
  * with support for various day types such as specific days (e.g., "Monday"), "Weekend", "Weekday", or "All".
+ *
+ * @property DayOfWeek $dayOfWeek The day of the week to validate against
+ * @property string    $timezone  The timezone to be used for validation
  *
  * Example usage:
  *
@@ -18,42 +20,45 @@ use ThreeLeaf\ValidationEngine\Enums\DayOfWeek;
  *
  * - Validate a range for weekends:
  *   `new DayOfWeekRule(DayOfWeek::Weekend)`
- *
- * @mixin ValidationRule
  */
-class DayOfWeekRule implements ValidationRule
+class DayOfWeekRule extends ValidationEngineRule
 {
-    protected DayOfWeek $dayOfWeek;
-
     /**
      * Create a new DayOfWeekRule instance.
      *
      * @param DayOfWeek $dayOfWeek The day of the week to validate against
+     * @param string    $timezone  The timezone to be used for validation, defaults to 'UTC'
      */
-    public function __construct(DayOfWeek $dayOfWeek)
+    public function __construct(DayOfWeek $dayOfWeek, string $timezone = 'UTC')
     {
+        // Use magic setter to assign attributes to the abstract class properties
         $this->dayOfWeek = $dayOfWeek;
+        $this->timezone = $timezone;
     }
 
     /**
-     * Validate the given attribute.
+     * Validate if the given value falls on the specified day of the week.
      *
-     * @param string  $attribute The name of the attribute being validated
-     * @param mixed   $value     The date: Expected to be a Carbon instance or a date string
-     * @param Closure $fail      The Closure to call if validation fails
+     * {@inheritDoc}
+     *
+     * @param string  $attribute The name of the attribute being validated.
+     * @param mixed   $value     The date: Expected to be a Carbon instance or a date string.
+     * @param Closure $fail      The closure to call if validation fails.
      *
      * @return void
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+        // Use the default timezone if no value is passed
         if (empty($value)) {
-            $value = Carbon::now();
+            $value = Carbon::now($this->timezone);
         } else {
-            $value = Carbon::parse($value);
+            $value = Carbon::parse($value)->setTimezone($this->timezone);
         }
 
-        $currentDay = $value->format('l');
+        $currentDay = $value->format('l'); // Full textual day format
 
+        // Trigger the fail closure if the current day does not match the expected day
         if (!$this->dayMatches($currentDay)) {
             $fail("The $attribute is not within the allowed day-of-week: {$this->dayOfWeek->value}.");
         }
@@ -62,9 +67,9 @@ class DayOfWeekRule implements ValidationRule
     /**
      * Check if the current day matches the rule's day of the week.
      *
-     * @param string $currentDay
+     * @param string $currentDay The full textual representation of the day (e.g., "Monday").
      *
-     * @return bool
+     * @return bool True if the day matches the rule's condition, otherwise false.
      */
     protected function dayMatches(string $currentDay): bool
     {

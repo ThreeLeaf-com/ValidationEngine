@@ -3,18 +3,18 @@
 namespace ThreeLeaf\ValidationEngine\Rules;
 
 use Closure;
-use Illuminate\Contracts\Validation\ValidationRule;
 use InvalidArgumentException;
 use ReflectionEnum;
 use ReflectionException;
 use UnitEnum;
 
 /**
- * Class EnumValidationRule
- *
  * A validation rule that checks if a given value is either present in a specified array of enum values
  * or, if no array is provided, that the value is a valid instance of the specified enum class.
  * It supports both matching based on the enum's value and matching based on the enum's name.
+ *
+ * @property  string $enumClass     The fully qualified class name of the enum.
+ * @property array   $allowedValues The array of allowed enum values, names, or instances.
  *
  * Example usage:
  *
@@ -43,14 +43,9 @@ use UnitEnum;
  * }
  * ```
  *
- * @package App\Rules
  */
-class EnumRule implements ValidationRule
+class EnumRule extends ValidationEngineRule
 {
-    protected string $enumClass;
-
-    protected array $allowedValues;
-
     /**
      * Create a new rule instance.
      *
@@ -90,13 +85,13 @@ class EnumRule implements ValidationRule
 
         if ($parsedValue === null) {
             $fail("The $attribute is not a valid instance of $this->enumClass.");
-        } elseif (!empty($this->allowedValues) && !in_array($parsedValue, $this->allowedValues, true)) {
+        } elseif (!empty($this->attributes['allowedValues']) && !in_array($parsedValue, $this->allowedValues, true)) {
             $fail("The $attribute must be one of the allowed values.");
         }
     }
 
     /**
-     * Attempts to convert a string to an enum instance using the value or the name.
+     * Convert the given input to an enum instance using the value or name.
      *
      * @param mixed $input The input to convert.
      *
@@ -121,6 +116,32 @@ class EnumRule implements ValidationRule
     }
 
     /**
+     * Attempts to convert a string to an enum instance by its name.
+     *
+     * @param string $input The input string to match.
+     *
+     * @return UnitEnum|null The matched enum instance, or null if not found.
+     */
+    public function convertToEnumByName(string $input): ?UnitEnum
+    {
+        $result = null;
+
+        try {
+            $reflection = new ReflectionEnum($this->enumClass);
+            foreach ($reflection->getCases() as $case) {
+                if ($case->getName() === $input) {
+                    $result = $case->getValue();
+                    break;
+                }
+            }
+        } catch (ReflectionException) {
+            /* Ignore exceptions. */
+        }
+
+        return $result;
+    }
+
+    /**
      * Convert an array of values to an array of enum instances.
      *
      * @param array<mixed> $inputs The inputs to convert.
@@ -140,31 +161,5 @@ class EnumRule implements ValidationRule
         }
 
         return $enumInstances;
-    }
-
-    /**
-     * Attempts to convert a string to an enum instance by its name.
-     *
-     * @param mixed $input The input string to match.
-     *
-     * @return UnitEnum|null The matched enum instance, or null if not found.
-     */
-    public function convertToEnumByName(mixed $input): ?UnitEnum
-    {
-        $result = null;
-
-        try {
-            $reflection = new ReflectionEnum($this->enumClass);
-            foreach ($reflection->getCases() as $case) {
-                if ($case->getName() === $input) {
-                    $result = $case->getValue();
-                    break;
-                }
-            }
-        } catch (ReflectionException) {
-            /* Ignore exceptions. */
-        }
-
-        return $result;
     }
 }
