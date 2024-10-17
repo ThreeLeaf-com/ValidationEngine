@@ -52,7 +52,7 @@ class DayTimeRuleTest extends TestCase
 
         /* Test with a Monday (not a weekend) */
         $failed = false;
-        $rule->validate('date_time', '2024-10-14 09:00:00', $this->createFailClosure($failed, $message));
+        $rule->validate('date_time', '2024-10-14 19:00:00', $this->createFailClosure($failed, $message));
         $this->assertTrue($failed, 'Validation should fail when the day is not a weekend.');
         $this->assertStringContainsString('The date_time is not within the allowed day-of-week', $message);
     }

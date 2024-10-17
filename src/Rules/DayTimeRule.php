@@ -2,16 +2,13 @@
 
 namespace ThreeLeaf\ValidationEngine\Rules;
 
-use Carbon\Carbon;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use ThreeLeaf\ValidationEngine\Enums\DayOfWeek;
 
 /**
- * A validation rule that checks if a given date and time falls within
- * a specified day of the week and a time range, with support for various
- * day types such as specific days (e.g., "Monday"), "Weekend", "Weekday",
- * or "All". The rule also allows setting a specific timezone for the validation.
+ * A combined validation rule that checks if a given date and time fall within a
+ * specified day of the week and time range.
  *
  * Example usage:
  *
@@ -60,26 +57,28 @@ use ThreeLeaf\ValidationEngine\Enums\DayOfWeek;
  *     echo "Validation passed.";
  * }
  * ```
+ *
+ * @see DayOfWeekRule
+ * @see TimeOfDayRule
+ *
+ * @mixin ValidationRule
  */
 class DayTimeRule implements ValidationRule
 {
-    protected DayOfWeek $dayOfWeek;
+    private DayOfWeekRule $dayOfWeekRule;
 
-    protected string $startTime;
-
-    protected string $endTime;
-
-    protected string $timezone;
+    private TimeOfDayRule $timeOfDayRule;
 
     /**
-     * Create a new rule instance.
+     * Create a new DayTimeRule instance.
      *
      * The default day and time range, if no parameters are used, is 24/7 (24 hours a day, 7 days a week).
      *
-     * @param DayOfWeek $dayOfWeek The day of the week enum (e.g., DayOfWeek::Monday)
-     * @param string    $startTime Start time in 'H:i' format (e.g., '09:00')
-     * @param string    $endTime   End time in 'H:i' format (e.g., '17:00')
-     * @param string    $timezone  Timezone (e.g., 'America/New_York')
+     *
+     * @param DayOfWeek $dayOfWeek The day of the week to validate against
+     * @param string    $startTime The start time (HH:MM format)
+     * @param string    $endTime   The end time (HH:MM format)
+     * @param string    $timezone  The timezone to be used for validation
      */
     public function __construct(
         DayOfWeek $dayOfWeek = DayOfWeek::ALL,
@@ -88,10 +87,8 @@ class DayTimeRule implements ValidationRule
         string    $timezone = 'UTC',
     )
     {
-        $this->dayOfWeek = $dayOfWeek;
-        $this->startTime = $startTime;
-        $this->endTime = $endTime;
-        $this->timezone = $timezone;
+        $this->dayOfWeekRule = new DayOfWeekRule($dayOfWeek);
+        $this->timeOfDayRule = new TimeOfDayRule($startTime, $endTime, $timezone);
     }
 
     /**
@@ -105,43 +102,7 @@ class DayTimeRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (empty($value)) {
-            $value = Carbon::now($this->timezone);
-        } else {
-            $value = Carbon::parse($value)->setTimezone($this->timezone);
-        }
-
-        $currentDay = $value->format('l');
-
-        if (!$this->dayMatches($currentDay)) {
-            $fail("The $attribute is not within the allowed day-of-week: {$this->dayOfWeek->value}.");
-            return;
-        }
-
-        $currentTime = $value->format('H:i');
-
-        if ($currentTime < $this->startTime || $currentTime > $this->endTime) {
-            $fail("The $attribute is not within the allowed time window from $this->startTime to $this->endTime.");
-        }
-    }
-
-    /**
-     * Check if the current day matches the rule's day of the week.
-     *
-     * @param string $currentDay
-     *
-     * @return bool
-     */
-    protected function dayMatches(string $currentDay): bool
-    {
-        $weekendDays = ['Saturday', 'Sunday'];
-        $weekdayDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-
-        return match ($this->dayOfWeek) {
-            DayOfWeek::ALL => true,
-            DayOfWeek::WEEKEND => in_array($currentDay, $weekendDays),
-            DayOfWeek::WEEKDAY => in_array($currentDay, $weekdayDays),
-            default => $currentDay === $this->dayOfWeek->value,
-        };
+        $this->dayOfWeekRule->validate($attribute, $value, $fail);
+        $this->timeOfDayRule->validate($attribute, $value, $fail);
     }
 }
