@@ -59,8 +59,6 @@ use ThreeLeaf\ValidationEngine\Enums\ActiveStatus;
  *         description="The active status of the validator, indicating whether it is active or inactive."
  *     ),
  * )
- *
- * @package ThreeLeaf\Validation\Models
  */
 class Validator extends Model
 {
