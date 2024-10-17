@@ -31,8 +31,8 @@ class TimesOfDayRule extends ValidationEngineRule
     public function __construct(array $timeRanges, string $timezone = 'UTC')
     {
         /* Initialize TimeOfDayRule instances for each time range */
-        foreach ($timeRanges as [$startTime, $endTime]) {
-            $this->timeOfDayRules[] = new TimeOfDayRule($startTime, $endTime, $timezone);
+        foreach ($timeRanges as $timeRange) {
+            $this->timeOfDayRules[] = new TimeOfDayRule($timeRange['startTime'], $timeRange['endTime'], $timeRange['timezone']);
         }
     }
 
