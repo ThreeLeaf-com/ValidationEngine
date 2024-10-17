@@ -130,6 +130,6 @@ class RuleTest extends TestCase
 
         $this->assertInstanceOf(EnumRule::class, $validationRule);
         $this->assertSame(DayOfWeek::class, $validationRule->enumClass);
-        $this->assertSame(['Monday', 'Wednesday', 'Friday'], $validationRule->allowedValues);
+        $this->assertSame([DayOfWeek::MONDAY, DayOfWeek::WEDNESDAY, DayOfWeek::FRIDAY], $validationRule->allowedValues);
     }
 }

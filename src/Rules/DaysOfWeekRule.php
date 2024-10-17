@@ -29,9 +29,13 @@ class DaysOfWeekRule extends ValidationEngineRule
      * @param DayOfWeek[] $daysOfWeek The array of days of the week to validate against
      * @param string      $timezone   The timezone to be used for validation, defaults to 'UTC'
      */
-    public function __construct(array $daysOfWeek, string $timezone = 'UTC')
+    public function __construct(array $daysOfWeek = [DayOfWeek::ALL], string $timezone = 'UTC')
     {
-        $this->daysOfWeek = $daysOfWeek;
+        $days = [];
+        foreach ($daysOfWeek as $dayOfWeek) {
+            $days[] = $dayOfWeek instanceof DayOfWeek ? $dayOfWeek : DayOfWeek::tryFrom($dayOfWeek);
+        }
+        $this->daysOfWeek = $days;
         $this->timezone = $timezone;
     }
 

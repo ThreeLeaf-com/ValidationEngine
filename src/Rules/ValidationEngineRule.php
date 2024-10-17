@@ -75,10 +75,6 @@ abstract class ValidationEngineRule implements ValidationRule, Arrayable, ArrayA
                 $instance = new $class();
             }
 
-            foreach ($attributes as $key => $value) {
-                $instance->$key = $value;
-            }
-
             return $instance;
         } catch (ReflectionException $e) {
             throw new InvalidArgumentException("Unable to create instance of $class: " . $e->getMessage());
