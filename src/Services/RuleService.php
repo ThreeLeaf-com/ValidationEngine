@@ -47,11 +47,11 @@ class RuleService
     public function compileRule(Rule $rule): ?ValidationRule
     {
         /* Retrieve the rule parameters */
-        $parameters = json_decode($rule->parameters, true);
         try {
-            return Container::getInstance()->makeWith($rule->rule_type, $parameters);
+            return Container::getInstance()->makeWith($rule->rule_type, $rule->parameters);
         } catch (Throwable $exception) {
-            Log::error("Error instantiating '$rule->rule_type' with parameters '$rule->parameters':\n", $exception->getTrace());
+            $parameters = json_encode($rule->parameters);
+            Log::error("Error instantiating '$rule->rule_type' with parameters '$parameters':\n", $exception->getTrace());
             return null;
         }
     }

@@ -51,7 +51,7 @@ class RuleServiceTest extends TestCase
     {
         $rule = new Rule();
         $rule->rule_type = DayTimeRule::class;
-        $rule->parameters = json_encode(['param' => 'value']);
+        $rule->parameters = ['param' => 'value'];
 
         $ruleInstanceMock = $this->mock(ValidationRule::class);
 
@@ -84,7 +84,7 @@ class RuleServiceTest extends TestCase
     {
         $rule = new Rule();
         $rule->rule_type = DayTimeRule::class;
-        $rule->parameters = json_encode([]);
+        $rule->parameters = [];
 
         $ruleInvalid = new Rule();
         $ruleInvalid->setRawAttributes(['rule_type' => 'InvalidClass']);
