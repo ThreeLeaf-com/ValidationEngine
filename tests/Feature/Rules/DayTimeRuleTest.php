@@ -40,4 +40,15 @@ class DayTimeRuleTest extends TestCase
         $this->assertFalse($validator->passes());
         $this->assertContains('The dateTime is not within the allowed time window from 09:00 to 17:00.', $validator->errors()->all());
     }
+
+    /** @test the rule used in a validator. */
+    public function defaultConstructor()
+    {
+        $rule = new DayTimeRule();
+        $attributes = $rule->toArray();
+        $this->assertEquals(DayOfWeek::ALL, $attributes['dayOfWeek']);
+        $this->assertEquals('00:00', $attributes['startTime']);
+        $this->assertEquals('23:59', $attributes['endTime']);
+        $this->assertEquals('UTC', $attributes['timezone']);
+    }
 }

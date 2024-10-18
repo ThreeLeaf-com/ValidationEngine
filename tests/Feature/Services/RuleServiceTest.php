@@ -20,7 +20,7 @@ class RuleServiceTest extends TestCase
     {
         $rule = new Rule();
         $rule->rule_type = DayTimeRule::class;
-        $rule->parameters = json_encode([]);
+        $rule->parameters = [];
 
         LaravelValidator::shouldReceive('make')->andReturnSelf();
         LaravelValidator::shouldReceive('passes')->andReturn(true);
@@ -35,7 +35,7 @@ class RuleServiceTest extends TestCase
     {
         $rule = new Rule();
         $rule->rule_type = DayTimeRule::class;
-        $rule->parameters = json_encode([]);
+        $rule->parameters = ['endTime' => '00:01'];
 
         // Mock Laravel Validator to fail
         LaravelValidator::shouldReceive('make')->andReturnSelf();
@@ -70,40 +70,13 @@ class RuleServiceTest extends TestCase
     {
         $rule = new Rule();
         $rule->setRawAttributes(['rule_type' => 'InvalidClass']);
-        $rule->parameters = json_encode(['param' => 'invalid_value']);
+        $rule->parameters = ['param' => 'invalid_value'];
 
         Log::shouldReceive('error')->once();
 
         $compiledRule = $this->ruleService->compileRule($rule);
 
         $this->assertNull($compiledRule, 'The rule should return null if an exception occurs.');
-    }
-
-    /** @test {@link RuleService::validateRules()} that processes valid rule and ignores invalid rule. */
-    public function validateRulesValidAndInvalidRules()
-    {
-        $rule = new Rule();
-        $rule->rule_type = DayTimeRule::class;
-        $rule->parameters = [];
-
-        $ruleInvalid = new Rule();
-        $ruleInvalid->setRawAttributes(['rule_type' => 'InvalidClass']);
-        $ruleInvalid->parameters = json_encode([]);
-
-        $ruleInstanceMock = $this->mock(ValidationRule::class);
-
-        $this->app->bind($rule->rule_type, function () use ($ruleInstanceMock) {
-            return $ruleInstanceMock;
-        });
-
-        LaravelValidator::shouldReceive('make')->andReturnSelf();
-        LaravelValidator::shouldReceive('passes')->andReturn(true);
-
-        Log::shouldReceive('error')->once();
-
-        $isValid = $this->ruleService->validateRules([$rule, $ruleInvalid], ['key' => 'value']);
-
-        $this->assertTrue($isValid, 'The data should still pass validation as valid rules are processed.');
     }
 
     protected function setUp(): void

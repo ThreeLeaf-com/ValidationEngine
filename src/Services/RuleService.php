@@ -5,7 +5,6 @@ namespace ThreeLeaf\ValidationEngine\Services;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator as LaravelValidator;
 use ThreeLeaf\ValidationEngine\Models\Rule;
 use Throwable;
 
@@ -23,18 +22,17 @@ class RuleService
      */
     public function validateRules(array $rules, array $data): bool
     {
-        $compiledRules = [];
+        $passes = true;
         foreach ($rules as $rule) {
-            $compiledRule = $this->compileRule($rule);
-            if ($compiledRule) {
-                $compiledRules[] = $compiledRule;
+            $ruleInstance = $rule->instantiateRule();
+            $passes &= $ruleInstance->isValidFor($data[$rule->attribute] ?? null);
+
+            if (!$passes) {
+                break;
             }
         }
 
-        /* Create the Laravel validator */
-        $laravelValidator = LaravelValidator::make($data, $compiledRules);
-
-        return $laravelValidator->passes();
+        return $passes;
     }
 
     /**
