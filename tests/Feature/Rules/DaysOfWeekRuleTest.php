@@ -7,10 +7,11 @@ use Tests\Feature\TestCase;
 use ThreeLeaf\ValidationEngine\Enums\DayOfWeek;
 use ThreeLeaf\ValidationEngine\Rules\DaysOfWeekRule;
 
+/** Test {@link DaysOfWeekRule}. */
 class DaysOfWeekRuleTest extends TestCase
 {
     /**
-     * Test that a valid date falls on one of the allowed days of the week.
+     * @test that a valid date falls on one of the allowed days of the week.
      */
     public function testPositiveValidation()
     {
@@ -25,7 +26,7 @@ class DaysOfWeekRuleTest extends TestCase
     }
 
     /**
-     * Test that a date falling on a day outside the allowed days fails validation.
+     * @test that a date falling on a day outside the allowed days fails validation.
      */
     public function testNegativeValidation()
     {
@@ -45,7 +46,7 @@ class DaysOfWeekRuleTest extends TestCase
     }
 
     /**
-     * Test the instantiation of the DaysOfWeekRule class.
+     * @test the instantiation of the DaysOfWeekRule class.
      */
     public function testInstantiateRule()
     {
@@ -55,5 +56,21 @@ class DaysOfWeekRuleTest extends TestCase
 
         $this->assertEquals([DayOfWeek::MONDAY, DayOfWeek::WEDNESDAY, DayOfWeek::FRIDAY], $rule->daysOfWeek, 'Days of the week should match.');
         $this->assertEquals('America/New_York', $rule->timezone, 'Timezone should match.');
+    }
+
+    /**
+     * @test
+     * Test that validation fails when $value is null.
+     */
+    public function testValidateFailsWithNullValue()
+    {
+        $rule = new DaysOfWeekRule([DayOfWeek::ALL]);
+
+        $validator = Validator::make(
+            ['date' => null],
+            ['date' => [$rule]]
+        );
+
+        $this->assertTrue($validator->passes(), 'Validation should pass for all days.');
     }
 }

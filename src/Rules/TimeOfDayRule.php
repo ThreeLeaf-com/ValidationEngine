@@ -4,6 +4,7 @@ namespace ThreeLeaf\ValidationEngine\Rules;
 
 use Carbon\Carbon;
 use Closure;
+use Throwable;
 
 /**
  * A validation rule that checks if a given time falls within a specified time range,
@@ -48,10 +49,11 @@ class TimeOfDayRule extends ValidationEngineRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (empty($value)) {
-            $value = Carbon::now($this->timezone);
-        } else {
-            $value = Carbon::parse($value)->setTimezone($this->timezone);
+        try {
+            $value = empty($value) ? Carbon::now($this->timezone) : Carbon::parse($value)->setTimezone($this->timezone);
+        } catch (Throwable) {
+            $fail("The $attribute is not in a valid time format.");
+            return;
         }
 
         $currentTime = $value->format('H:i');

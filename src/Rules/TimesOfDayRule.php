@@ -25,10 +25,9 @@ class TimesOfDayRule extends ValidationEngineRule
     /**
      * Create a new TimesOfDayRule instance.
      *
-     * @param array  $timeRanges An array of time ranges where each range is an array with [start, end].
-     * @param string $timezone   The timezone to be used for validation, defaults to 'UTC'
+     * @param array $timeRanges An array of time ranges where each range is an array with [start, end].
      */
-    public function __construct(array $timeRanges, string $timezone = 'UTC')
+    public function __construct(array $timeRanges)
     {
         /* Initialize TimeOfDayRule instances for each time range */
         foreach ($timeRanges as $timeRange) {

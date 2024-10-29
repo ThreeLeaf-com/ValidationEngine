@@ -38,7 +38,6 @@ return new class extends Migration {
 
         Schema::create('v_validator_rules', function (Blueprint $table) {
             $table->comment('Associates rules with validators, allowing validators to use multiple rules.');
-            $table->uuid('validator_rule_id')->primary()->comment('The unique identifier for the ValidatorRule.');
             $table->uuid('validator_id')->comment('Foreign key referencing the unique ID of the validator.');
             $table->uuid('rule_id')->comment('Foreign key referencing the unique ID of the rule.');
             $table->integer('order_number')->default(1)->comment('The order in which the rule should be applied.');
@@ -49,6 +48,8 @@ return new class extends Migration {
             $table->timestamp(Model::CREATED_AT)->useCurrent()->comment('The timestamp of when the entry was created.');
             $table->timestamp(Model::UPDATED_AT)->useCurrent()->useCurrentOnUpdate()->comment('The timestamp of when the entry was last updated.');
 
+            $table->primary(['validator_id', 'rule_id']);
+
             $table->foreign('validator_id')
                 ->references('validator_id')
                 ->on('v_validators')
@@ -58,8 +59,6 @@ return new class extends Migration {
                 ->references('rule_id')
                 ->on('v_rules')
                 ->onDelete('cascade');
-
-            $table->unique(['validator_id', 'rule_id']);
         });
     }
 

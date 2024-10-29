@@ -3,17 +3,16 @@
 namespace ThreeLeaf\ValidationEngine\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use ThreeLeaf\ValidationEngine\Constants\ValidatorEngineConstants;
 use ThreeLeaf\ValidationEngine\Enums\ActiveStatus;
+use ThreeLeaf\ValidationEngine\Traits\HasCompositeKey;
 
 /**
  * ValidatorRule model that represents the relationship between Validators and Rules.
  *
- * @property string                    $validator_rule_id   The unique ID
  * @property string                    $validator_id        The unique ID of the {@link Validator}
  * @property string                    $rule_id             The unique ID of the {@link Rule}
  * @property int                       $order_number        The order in which the rule should be applied
@@ -26,13 +25,6 @@ use ThreeLeaf\ValidationEngine\Enums\ActiveStatus;
  * @OA\Schema(
  *     schema="ValidatorRule",
  *     required={"validator_id", "rule_id", "order_number", "active_status"},
- *     @OA\Property(
- *         property="validator_rule_id",
- *         type="string",
- *         format="uuid",
- *         description="The unique identifier for the ValidatorRule.",
- *         example="3f39e1b8-2d36-49cf-a567-12345abcde67"
- *     ),
  *     @OA\Property(
  *         property="validator_id",
  *         type="string",
@@ -62,15 +54,15 @@ use ThreeLeaf\ValidationEngine\Enums\ActiveStatus;
  */
 class ValidatorRule extends Model
 {
-    use HasUuids;
+    use HasCompositeKey;
     use HasFactory;
 
     public const TABLE_NAME = ValidatorEngineConstants::TABLE_PREFIX . 'validator_rules';
-    public const PRIMARY_KEY = 'validator_rule_id';
 
     protected $table = self::TABLE_NAME;
 
-    protected $primaryKey = self::PRIMARY_KEY;
+    /** @var string[] composite primary key. */
+    protected array $primaryKeys = ['validator_id', 'rule_id'];
 
     protected $fillable = [
         'validator_id',
