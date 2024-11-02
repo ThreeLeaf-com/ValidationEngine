@@ -24,16 +24,15 @@ class TimeOfDayRule extends ValidationEngineRule
     /**
      * Create a new TimeOfDayRule instance.
      *
-     * @param string $startTime The start time in HH:MM format, defaults to '00:00'
-     * @param string $endTime   The end time in HH:MM format, defaults to '23:59'
-     * @param string $timezone  The timezone to be used for validation, defaults to 'UTC'
+     * @param string|null $startTime The start time in HH:MM format, defaults to '00:00'
+     * @param string|null $endTime   The end time in HH:MM format, defaults to '23:59'
+     * @param string|null $timezone  The timezone to be used for validation, defaults to 'UTC'
      */
-    public function __construct(string $startTime = '00:00', string $endTime = '23:59', string $timezone = 'UTC')
+    public function __construct(?string $startTime = null, ?string $endTime = null, ?string $timezone = null)
     {
-        // Use the magic setter methods to assign values to attributes
-        $this->startTime = $startTime;
-        $this->endTime = $endTime;
-        $this->timezone = $timezone;
+        $this->startTime = $startTime === null || trim($startTime) === '' ? '00:00' : $startTime;
+        $this->endTime = $endTime === null || trim($endTime) === '' ? '23:59' : $endTime;
+        $this->timezone = $timezone === null || trim($timezone) === '' ? 'UTC' : $timezone;
     }
 
     /**

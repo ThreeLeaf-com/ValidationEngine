@@ -60,9 +60,14 @@ class EnumRule extends ValidationEngineRule
             throw new InvalidArgumentException("The class $enumClass is not a valid enum.");
         }
 
+        $allowedValues = array_filter($allowedValues, function ($value) {
+            /* Remove null and whitespace entries automatically */
+            return !is_null($value) && !(is_string($value) && trim($value) === '');
+        });
+
         $this->enumClass = $enumClass;
         $this->allowedValues = $this->convertToEnumArray($allowedValues);
-        if (count($allowedValues) != count($this->allowedValues)) {
+        if (count($allowedValues) > count($this->allowedValues)) {
             $allowedValuesString = implode(', ', array_map(function ($value) {
                 return (string)$value;
             }, $allowedValues));
@@ -99,7 +104,9 @@ class EnumRule extends ValidationEngineRule
      */
     public function convertToEnum(mixed $input): ?UnitEnum
     {
-        if ($input instanceof $this->enumClass || $input === null) {
+        if (empty($input)) {
+            $convertedEnum = null;
+        } elseif ($input instanceof $this->enumClass) {
             $convertedEnum = $input;
         } else {
             /** @noinspection PhpUndefinedMethodInspection tryFrom is a standard enum function. */
