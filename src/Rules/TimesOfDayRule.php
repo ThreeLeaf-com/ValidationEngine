@@ -52,7 +52,7 @@ class TimesOfDayRule extends ValidationEngineRule
 
         foreach ($this->timeOfDayRules as $timeOfDayRule) {
             $failed = false;
-            $timeOfDayRule->validate($attribute, $value, function ($message) use (&$failed) {
+            $timeOfDayRule->validate($attribute, $value, function () use (&$failed) {
                 $failed = true;
             });
 

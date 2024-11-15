@@ -37,7 +37,7 @@ class ValidatorRuleTest extends TestCase
         $validator = Validator::factory()->create();
         $rule = Rule::factory()->create();
 
-        $validatorRule = ValidatorRule::factory()->create([
+        ValidatorRule::factory()->create([
             'validator_id' => $validator->validator_id,
             'rule_id' => $rule->rule_id,
             'order_number' => 1,

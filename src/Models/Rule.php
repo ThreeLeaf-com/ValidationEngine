@@ -20,6 +20,9 @@ use ThreeLeaf\ValidationEngine\Rules\ValidationEngineRule;
  * @property array                       $parameters JSON-encoded parameters specific to the rule type
  *
  * @mixin Builder
+ * @method static static create(array $attributes = []) Create a new model instance.
+ * @method static static find(mixed $id) Find a model by its primary key.
+ * @method static static query() Begin querying the model.
  *
  * @OA\Schema(
  *     schema="Rule",
@@ -84,7 +87,7 @@ class Rule extends Model
     public function instantiateRule(): ValidationEngineRule
     {
         if (!class_exists($this->rule_type) || !is_subclass_of($this->rule_type, ValidationEngineRule::class)) {
-            throw new InvalidArgumentException("Invalid rule type: {$this->rule_type} must extend ValidationEngineRule.");
+            throw new InvalidArgumentException("Invalid rule type: $this->rule_type must extend ValidationEngineRule.");
         }
 
         return $this->rule_type::make($this->parameters);
