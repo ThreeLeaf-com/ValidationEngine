@@ -10,4 +10,5 @@ vendor/
 *.iml
 *.lock
 *.log
+*.zip
 .DS_Store
