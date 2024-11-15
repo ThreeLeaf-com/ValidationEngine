@@ -22,6 +22,9 @@ use ThreeLeaf\ValidationEngine\Enums\ActiveStatus;
  * @property-read HasMany<Rule> $rules         The rules associated with this validator.
  *
  * @mixin Builder
+ * @method static static create(array $attributes = []) Create a new model instance.
+ * @method static static find(mixed $id) Find a model by its primary key.
+ * @method static static query() Begin querying the model.
  *
  * @OA\Schema(
  *     schema="Validator",

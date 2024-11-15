@@ -21,6 +21,9 @@ use ThreeLeaf\ValidationEngine\Traits\HasCompositeKey;
  * @property-read BelongsTo<Rule>      $rule                The rule that belongs to this relationship.
  *
  * @mixin Builder
+ * @method static static create(array $attributes = []) Create a new model instance.
+ * @method static static find(mixed $id) Find a model by its primary key.
+ * @method static static query() Begin querying the model.
  *
  * @OA\Schema(
  *     schema="ValidatorRule",

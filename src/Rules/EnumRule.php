@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpMultipleClassDeclarationsInspection */
 
 namespace ThreeLeaf\ValidationEngine\Rules;
 
@@ -49,8 +50,8 @@ class EnumRule extends ValidationEngineRule
     /**
      * Create a new rule instance.
      *
-     * @param string       $enumClass     The fully qualified class name of the enum.
-     * @param array<mixed> $allowedValues Optional array of allowed enum values, names, or instances.
+     * @param string $enumClass     The fully qualified class name of the enum.
+     * @param array  $allowedValues Optional array of allowed enum values, names, or instances.
      *
      * @throws InvalidArgumentException If the provided class is not a valid enum or an allowed value does not represent a valid enum.
      */
@@ -151,7 +152,7 @@ class EnumRule extends ValidationEngineRule
     /**
      * Convert an array of values to an array of enum instances.
      *
-     * @param array<mixed> $inputs The inputs to convert.
+     * @param array $inputs The inputs to convert.
      *
      * @return array<UnitEnum> The array of valid enum instances.
      */

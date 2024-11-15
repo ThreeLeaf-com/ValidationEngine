@@ -1,9 +1,16 @@
+# For use with git archive command:
+# git archive --worktree-attributes --format=zip --output="$(basename "$PWD").zip" HEAD
+
 * text=auto eol=lf
 
 *.php diff=php
 
-/.git export-ignore
+.editorconfig export-ignore
+.gitattributes export-ignore
 .gitignore export-ignore
+/.git export-ignore
 /.idea export-ignore
+/tests export-ignore
+/util  export-ignore
 /vendor export-ignore
-
+phpunit.xml export-ignore
