@@ -6,27 +6,29 @@ use Closure;
 use InvalidArgumentException;
 
 /**
- * A validation rule that ensures a value is NOT present in a predefined array of restricted values.
+ * A validation rule that checks if a given value is NOT present in a predefined array of disallowed values.
+ * The disallowed values may include scalars, strings, or regular expressions.
  *
- * @property array $restrictedValues The array of restricted values.
+ * @property array $disallowedValues The array of disallowed values.
  */
 class NoneOfRule extends ValidationEngineRule
 {
-    /** @var array The restricted values */
-    private array $restrictedValues;
+    /** @var array The disallowed values (scalars or regex strings). */
+    private array $disallowedValues;
 
     /**
      * Constructor for the NoneOfRule.
      *
-     * @param array $restrictedValues An array of restricted values for the rule.
+     * @param array $disallowedValues An array of disallowed values for the rule.
+     *                                Regular expressions must be valid and properly delimited.
      */
-    public function __construct(array $restrictedValues)
+    public function __construct(array $disallowedValues)
     {
-        if (empty($restrictedValues)) {
-            throw new InvalidArgumentException('The restricted values array cannot be empty.');
+        if (empty($disallowedValues)) {
+            throw new InvalidArgumentException('The disallowed values array cannot be empty.');
         }
 
-        $this->restrictedValues = $restrictedValues;
+        $this->disallowedValues = $disallowedValues;
     }
 
     /**
@@ -40,8 +42,18 @@ class NoneOfRule extends ValidationEngineRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (in_array($value, $this->restrictedValues, true)) {
-            $fail("The $attribute must not be any of the restricted values: " . implode(', ', $this->restrictedValues) . '.');
+        foreach ($this->disallowedValues as $disallowedValue) {
+            if (is_string($disallowedValue) && @preg_match($disallowedValue, '') !== false) {
+                /* Regular Expression Check */
+                if (preg_match($disallowedValue, $value)) {
+                    $fail("The $attribute must not match the disallowed pattern: $disallowedValue.");
+                    return;
+                }
+            } elseif ($value === $disallowedValue) {
+                /* Scalar value matched */
+                $fail("The $attribute must not be one of the disallowed values: " . var_export($disallowedValue, true) . '.');
+                return;
+            }
         }
     }
 }

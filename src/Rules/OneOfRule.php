@@ -7,18 +7,20 @@ use InvalidArgumentException;
 
 /**
  * A validation rule that checks if a given value is present in a predefined array of allowed values.
+ * The allowed values may include scalars, strings, or valid regular expressions.
  *
  * @property array $allowedValues The array of allowed values.
  */
 class OneOfRule extends ValidationEngineRule
 {
-    /** @var array The allowed values */
+    /** @var array The allowed values (scalars or regex strings). */
     private array $allowedValues;
 
     /**
      * Constructor for the OneOfRule.
      *
      * @param array $allowedValues An array of allowed values for the rule.
+     *                             Regular expressions must be valid and properly delimited.
      */
     public function __construct(array $allowedValues)
     {
@@ -40,7 +42,22 @@ class OneOfRule extends ValidationEngineRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (!in_array($value, $this->allowedValues, true)) {
+        $isMatched = false;
+        foreach ($this->allowedValues as $allowedValue) {
+            if (is_string($allowedValue) && @preg_match($allowedValue, '') !== false) {
+                /* Regular Expression Check */
+                if (preg_match($allowedValue, $value)) {
+                    $isMatched = true;
+                    break;
+                }
+            } elseif ($value === $allowedValue) {
+                /* Scalar value matched */
+                $isMatched = true;
+                break;
+            }
+        }
+
+        if (!$isMatched) {
             $fail("The $attribute must be one of the allowed values: " . implode(', ', $this->allowedValues) . '.');
         }
     }
