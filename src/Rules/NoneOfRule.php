@@ -9,12 +9,10 @@ use InvalidArgumentException;
  * A validation rule that checks if a given value is NOT present in a predefined array of disallowed values.
  * The disallowed values may include scalars, strings, or regular expressions.
  *
- * @property array $disallowedValues The array of disallowed values.
+ * @property array $disallowedValues The array of disallowed values (scalars or regex strings).
  */
 class NoneOfRule extends ValidationEngineRule
 {
-    /** @var array The disallowed values (scalars or regex strings). */
-    private array $disallowedValues;
 
     /**
      * Constructor for the NoneOfRule.

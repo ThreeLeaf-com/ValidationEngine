@@ -9,13 +9,10 @@ use InvalidArgumentException;
  * A validation rule that checks if a given value is present in a predefined array of allowed values.
  * The allowed values may include scalars, strings, or valid regular expressions.
  *
- * @property array $allowedValues The array of allowed values.
+ * @property array $allowedValues The array of allowed values (scalars or regex strings).
  */
 class OneOfRule extends ValidationEngineRule
 {
-    /** @var array The allowed values (scalars or regex strings). */
-    private array $allowedValues;
-
     /**
      * Constructor for the OneOfRule.
      *

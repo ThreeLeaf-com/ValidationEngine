@@ -56,14 +56,10 @@ use ThreeLeaf\ValidationEngine\Enums\DayOfWeek;
  */
 class DayTimeRule extends ValidationEngineRule
 {
-    /**
-     * @var DayOfWeekRule The rule that validates the day of the week.
-     */
+    /** @var DayOfWeekRule The rule that validates the day of the week. */
     private DayOfWeekRule $dayOfWeekRule;
 
-    /**
-     * @var TimeOfDayRule The rule that validates the time of the day.
-     */
+    /** @var TimeOfDayRule The rule that validates the time of the day. */
     private TimeOfDayRule $timeOfDayRule;
 
     /**
@@ -83,7 +79,6 @@ class DayTimeRule extends ValidationEngineRule
         string    $timezone = 'UTC',
     )
     {
-        // Initialize the individual day and time rules
         $this->dayOfWeekRule = new DayOfWeekRule($dayOfWeek, $timezone);
         $this->timeOfDayRule = new TimeOfDayRule($startTime, $endTime, $timezone);
     }
@@ -101,10 +96,7 @@ class DayTimeRule extends ValidationEngineRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        // Validate the day of the week
         $this->dayOfWeekRule->validate($attribute, $value, $fail);
-
-        // Validate the time of the day
         $this->timeOfDayRule->validate($attribute, $value, $fail);
     }
 
@@ -115,7 +107,7 @@ class DayTimeRule extends ValidationEngineRule
      */
     public function toArray(): array
     {
-        // Merge the arrays from both rules for unified access
+        /* Merge the arrays from both rules for unified access */
         return array_merge($this->dayOfWeekRule->toArray(), $this->timeOfDayRule->toArray());
     }
 }
