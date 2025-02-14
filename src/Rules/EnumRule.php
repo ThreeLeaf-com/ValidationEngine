@@ -91,7 +91,9 @@ class EnumRule extends ValidationEngineRule
 
         if ($parsedValue === null) {
             $fail("The $attribute is not a valid instance of $this->enumClass.");
-        } elseif (!empty($this->attributes['allowedValues']) && !in_array($parsedValue, $this->allowedValues, true)) {
+        } elseif (empty($this->attributes['allowedValues'])) {
+            $fail("No $this->enumClass values set.");
+        } elseif (!in_array($parsedValue, $this->allowedValues, true)) {
             $fail("The $attribute must be one of the allowed values.");
         }
     }
@@ -133,6 +135,7 @@ class EnumRule extends ValidationEngineRule
     public function convertToEnumByName(string $input): ?UnitEnum
     {
         $result = null;
+        $input = strtoupper($input);
 
         try {
             $reflection = new ReflectionEnum($this->enumClass);
