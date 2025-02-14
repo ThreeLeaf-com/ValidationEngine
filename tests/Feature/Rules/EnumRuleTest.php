@@ -16,7 +16,7 @@ class EnumRuleTest extends TestCase
     /** @test {@link EnumRule::validate()}. */
     public function validate()
     {
-        $rule = new EnumRule(DayOfWeek::class);
+        $rule = new EnumRule(DayOfWeek::class, [DayOfWeek::FRIDAY]);
 
         $validator = Validator::make(
             ['day' => DayOfWeek::FRIDAY],
@@ -61,7 +61,7 @@ class EnumRuleTest extends TestCase
     /** @test that a valid enum NAME is passed in. */
     public function testValidEnumAbbreviationPasses()
     {
-        $rule = new EnumRule(DayOfWeek::class);
+        $rule = new EnumRule(DayOfWeek::class, [DayOfWeek::MONDAY]);
 
         $validator = Validator::make(
             ['day' => 'MONDAY'],
@@ -74,7 +74,7 @@ class EnumRuleTest extends TestCase
     /** @test that a valid enum value is passed in. */
     public function testValidEnumNamePasses()
     {
-        $rule = new EnumRule(DayOfWeek::class);
+        $rule = new EnumRule(DayOfWeek::class, [DayOfWeek::SATURDAY]);
 
         $validator = Validator::make(
             ['day' => 'Saturday'],

@@ -14,7 +14,7 @@ class EnumAndDayTimeRuleTest extends TestCase
     /** @test that a valid dayOfWeek and time range combination passes validation. */
     public function testValidDayOfWeekAndTimePasses()
     {
-        $dayOfWeekRule = new EnumRule(DayOfWeek::class);
+        $dayOfWeekRule = new EnumRule(DayOfWeek::class, [DayOfWeek::MONDAY]);
         $dayTimeRule = new DayTimeRule(DayOfWeek::MONDAY, '09:00', '17:00', 'America/New_York');
 
         $validator = Validator::make(

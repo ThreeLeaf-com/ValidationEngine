@@ -9,8 +9,9 @@ use ThreeLeaf\ValidationEngine\Rules\EnumRule;
 /** Test {@link EnumRule}. */
 class EnumRuleTest extends TestCase
 {
-    /** @test that a valid enum abbreviation passes. */
-    public function testValidEnumPasses()
+
+    /** @test {@link EnumRule::validate()} fails when allowed enums is empty. */
+    public function validateNoneAllowed()
     {
         $rule = new EnumRule(DayOfWeek::class);
         $failed = false;
@@ -22,7 +23,26 @@ class EnumRuleTest extends TestCase
         };
 
         /* Assume 'Monday' is a valid enum abbreviation. */
-        $rule->validate('enum', 'Monday', $fail);
+        $rule->validate('enum', 'tuesday', $fail);
+
+        $this->assertTrue($failed, 'Validation should fail when no enums are allowed.');
+        $this->assertTrue($message == 'No ThreeLeaf\ValidationEngine\Enums\DayOfWeek values set.');
+    }
+
+    /** @test that a valid enum abbreviation passes. */
+    public function testValidEnumPasses()
+    {
+        $rule = new EnumRule(DayOfWeek::class, [DayOfWeek::TUESDAY]);
+        $failed = false;
+        $message = '';
+
+        $fail = function ($msg) use (&$failed, &$message) {
+            $failed = true;
+            $message = $msg;
+        };
+
+        /* Assume 'Monday' is a valid enum abbreviation. */
+        $rule->validate('enum', 'tuesday', $fail);
 
         $this->assertFalse($failed, 'Validation should pass when a valid enum abbreviation is provided.');
         $this->assertTrue($message == '');
@@ -108,7 +128,7 @@ class EnumRuleTest extends TestCase
     /** @test that a valid enum name passes. */
     public function testValidEnumNamePasses()
     {
-        $rule = new EnumRule(DayOfWeek::class);
+        $rule = new EnumRule(DayOfWeek::class, [DayOfWeek::MONDAY]);
         $failed = false;
         $message = '';
 
