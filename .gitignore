@@ -5,6 +5,7 @@ cache/
 storage/
 target/
 vendor/
+docs/
 # Files
 *.cache
 *.iml

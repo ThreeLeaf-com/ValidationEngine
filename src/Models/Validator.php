@@ -18,6 +18,7 @@ use ThreeLeaf\ValidationEngine\Enums\ActiveStatus;
  * @property string             $name          The unique name of the validator
  * @property string|null        $description   A brief description of the validator
  * @property string|null        $context       The context of the validator (e.g., can be used to help retrieve a set of related validators)
+ * @property int                $order_number  The evaluation order of the validator
  * @property ActiveStatus       $active_status Whether the validator is currently active.
  * @property-read HasMany<Rule> $rules         The rules associated with this validator.
  *
@@ -56,6 +57,12 @@ use ThreeLeaf\ValidationEngine\Enums\ActiveStatus;
  *         description="The context of the validator",
  *         example="verify-customer-data"
  *     ),
+ *      @OA\Property(
+ *          property='order_number',
+ *          type='integer',
+ *          description='The evaluation order of the validator',
+ *          example=1
+ *      ),
  *     @OA\Property(
  *         property="active_status",
  *         ref="#/components/schemas/ActiveStatus",
@@ -81,6 +88,7 @@ class Validator extends Model
         'name',
         'description',
         'context',
+        'order_number',
         'active_status',
     ];
 
