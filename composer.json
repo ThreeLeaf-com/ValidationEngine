@@ -1,7 +1,7 @@
 {
     "name": "threeleaf/validation-engine",
     "description": "A Laravel Eloquent Model for managing dynamic validation engine rules.",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "type": "library",
     "license": "GPL-3.0+",
     "authors": [
@@ -27,7 +27,7 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^10.5",
-        "orchestra/testbench": "^8.31",
+        "orchestra/testbench": "^8.36",
         "darkaonline/l5-swagger": "^8.6"
     },
     "extra": {
