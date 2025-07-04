@@ -3,6 +3,7 @@
 namespace Tests\Feature\Http\Controllers\Api;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Response as HttpCodes;
 use Tests\Feature\TestCase;
 use ThreeLeaf\ValidationEngine\Http\Controllers\Api\RuleController;
@@ -14,7 +15,8 @@ class RuleControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test {@link RuleController::index()}. */
+    /** Test {@link RuleController::index()}. */
+    #[Test]
     public function index()
     {
         Rule::factory()->count(3)->create();
@@ -25,7 +27,8 @@ class RuleControllerTest extends TestCase
         $response->assertJsonCount(3);
     }
 
-    /** @test {@link RuleController::store()}. */
+    /** Test {@link RuleController::store()}. */
+    #[Test]
     public function store()
     {
         $data = [
@@ -41,7 +44,8 @@ class RuleControllerTest extends TestCase
         $this->assertDatabaseHas(Rule::TABLE_NAME, ['attribute' => 'status']);
     }
 
-    /** @test {@link RuleController::show()}. */
+    /** Test {@link RuleController::show()}. */
+    #[Test]
     public function show()
     {
         $rule = Rule::factory()->create();
@@ -52,7 +56,8 @@ class RuleControllerTest extends TestCase
         $response->assertJsonFragment(['attribute' => $rule->attribute]);
     }
 
-    /** @test {@link RuleController::update()}. */
+    /** Test {@link RuleController::update()}. */
+    #[Test]
     public function update()
     {
         $rule = Rule::factory()->create();
@@ -70,7 +75,8 @@ class RuleControllerTest extends TestCase
         $this->assertDatabaseHas(Rule::TABLE_NAME, ['attribute' => 'updated_attribute']);
     }
 
-    /** @test {@link RuleController::destroy()}. */
+    /** Test {@link RuleController::destroy()}. */
+    #[Test]
     public function destroy()
     {
         $rule = Rule::factory()->create();

@@ -236,4 +236,23 @@ abstract class ValidationEngineRule implements ValidationRule, Arrayable, ArrayA
             $message = $msg;
         };
     }
+
+    /**
+     * Check if a string is a valid regular expression.
+     *
+     * @param string $pattern The pattern to check
+     * @return bool Whether the pattern is a valid regex
+     */
+    protected function isValidRegex(string $pattern): bool
+    {
+        if (empty($pattern)) {
+            return false;
+        }
+        $firstChar = $pattern[0];
+        // If the first character is alphanumeric, backslash, or NUL, it's not a valid delimiter
+        if (ctype_alnum($firstChar) || $firstChar === '\\' || $firstChar === "\0") {
+            return false;
+        }
+        return @preg_match($pattern, '') !== false;
+    }
 }

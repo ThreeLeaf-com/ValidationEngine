@@ -6,6 +6,7 @@ use Illuminate\Container\Container;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Validator as LaravelValidator;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\Feature\TestCase;
 use ThreeLeaf\ValidationEngine\Enums\ActiveStatus;
 use ThreeLeaf\ValidationEngine\Enums\DayOfWeek;
@@ -17,7 +18,8 @@ class RuleTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test {@link Rule::create()}. */
+    /** Test {@link Rule::create()}. */
+    #[Test]
     public function ruleCreate()
     {
         $rule = Rule::create([
@@ -38,9 +40,11 @@ class RuleTest extends TestCase
     }
 
     /**
-     * @test that a rule can be rehydrated
+     * Test that a rule can be rehydrated
+     *
      * @throws BindingResolutionException
      */
+    #[Test]
     public function ruleRehydration()
     {
         /* Create a new Rule with an EnumRule type for ActiveStatus and store it in the database. */
@@ -75,7 +79,8 @@ class RuleTest extends TestCase
         $this->assertEquals('The active_status is not a valid instance of ThreeLeaf\ValidationEngine\Enums\ActiveStatus.', $validator->errors()->first('active_status'));
     }
 
-    /** @test {@link Rule::update()}. */
+    /** Test {@link Rule::update()}. */
+    #[Test]
     public function ruleUpdate()
     {
         $rule = Rule::create([
@@ -95,7 +100,8 @@ class RuleTest extends TestCase
         ]);
     }
 
-    /** @test {@link Rule::delete()}. */
+    /** Test {@link Rule::delete()}. */
+    #[Test]
     public function ruleDelete()
     {
         $rule = Rule::create([
@@ -112,8 +118,9 @@ class RuleTest extends TestCase
         ]);
     }
 
-    /**  @test {@link Rule::instantiateRule()}. */
-    public function testRuleInstantiation()
+    /** Test {@link Rule::instantiateRule()}. */
+    #[Test]
+    public function ruleInstantiation()
     {
         $ruleData = [
             'attribute' => 'dayOfWeek',

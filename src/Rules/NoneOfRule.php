@@ -41,7 +41,7 @@ class NoneOfRule extends ValidationEngineRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         foreach ($this->disallowedValues as $disallowedValue) {
-            if (is_string($disallowedValue) && @preg_match($disallowedValue, '') !== false) {
+            if (is_string($disallowedValue) && $this->isValidRegex($disallowedValue)) {
                 /* Regular Expression Check */
                 if (preg_match($disallowedValue, $value)) {
                     $fail("The $attribute must not match the disallowed pattern: $disallowedValue.");

@@ -5,6 +5,7 @@ namespace Tests\Unit\Casts;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Contracts\Validation\ValidationRule;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ThreeLeaf\ValidationEngine\Casts\ClassCast;
 use ThreeLeaf\ValidationEngine\Models\Rule;
@@ -16,10 +17,9 @@ use ThreeLeaf\ValidationEngine\Models\ValidatorRule;
  */
 class ClassCastTest extends TestCase
 {
-    /**
-     * Test that ClassCast casts a valid class that implements an interface.
-     */
-    public function testCastValidClassImplementsInterface()
+    /** Test that ClassCast casts a valid class that implements an interface. */
+    #[Test]
+    public function castValidClassImplementsInterface()
     {
         // Mock data representing a class implementing ValidationRule
         $classCast = new ClassCast(ValidationRule::class);
@@ -27,10 +27,9 @@ class ClassCastTest extends TestCase
         $this->assertInstanceOf(ClassCast::class, $classCast, 'ClassCast should be instantiated for a valid interface implementation.');
     }
 
-    /**
-     * Test that ClassCast throws an exception if the class does not exist.
-     */
-    public function testCastNonExistentClass()
+    /** Test that ClassCast throws an exception if the class does not exist. */
+    #[Test]
+    public function castNonExistentClass()
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('NonExistentClass is not a valid class, interface, or trait.');
@@ -39,10 +38,9 @@ class ClassCastTest extends TestCase
         new ClassCast('NonExistentClass');
     }
 
-    /**
-     * Test that ClassCast throws an exception if the class does not implement or extend the expected type.
-     */
-    public function testCastClassFailsTypeCheck()
+    /** Test that ClassCast throws an exception if the class does not implement or extend the expected type. */
+    #[Test]
+    public function castClassFailsTypeCheck()
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('ThreeLeaf\ValidationEngine\Casts\ClassCast does not extend, implement, or use Illuminate\Contracts\Validation\ValidationRule.');
@@ -51,10 +49,9 @@ class ClassCastTest extends TestCase
         $classCast->set(new Rule(), 'key', ClassCast::class, []);
     }
 
-    /**
-     * Test that ClassCast throws an exception if the class doesn't implement the specified interface.
-     */
-    public function testCastClassFailsWithInvalidInterface()
+    /** Test that ClassCast throws an exception if the class doesn't implement the specified interface. */
+    #[Test]
+    public function castClassFailsWithInvalidInterface()
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('ThreeLeaf\ValidationEngine\Models\Rule does not extend, implement, or use Illuminate\Contracts\Validation\ValidationRule.');
@@ -66,10 +63,9 @@ class ClassCastTest extends TestCase
         $classCast->set(new ValidatorRule(), '', Rule::class, []);
     }
 
-    /**
-     * Test that ClassCast throws an exception if a class is valid but does not extend or implement the expected type.
-     */
-    public function testCastValidClassButDoesNotExtend()
+    /** Test that ClassCast throws an exception if a class is valid but does not extend or implement the expected type. */
+    #[Test]
+    public function castValidClassButDoesNotExtend()
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('does not extend');
@@ -79,10 +75,9 @@ class ClassCastTest extends TestCase
         $classCast->set(new ValidatorRule(), '', Validator::class, []);
     }
 
-    /**
-     * Test that ClassCast accepts valid class names using traits.
-     */
-    public function testCastClassWithTrait()
+    /** Test that ClassCast accepts valid class names using traits. */
+    #[Test]
+    public function castClassWithTrait()
     {
         // Mock a class that uses the trait
         $classCast = new ClassCast(CastsAttributes::class);

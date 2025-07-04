@@ -4,6 +4,7 @@ namespace Tests\Feature\Rules;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\Feature\TestCase;
 use ThreeLeaf\ValidationEngine\Rules\TimeOfDayRule;
 use ThreeLeaf\ValidationEngine\Rules\TimesOfDayRule;
@@ -12,11 +13,9 @@ class TimesOfDayRuleTest extends TestCase
 {
     private TimesOfDayRule $timesOfDayRule;
 
-    /**
-     * @test
-     * Test that validation passes for a time within any allowed range.
-     */
-    public function testValidationPassesForValidTime()
+    /** Test that validation passes for a time within any allowed range. */
+    #[Test]
+    public function validationPassesForValidTime()
     {
         $validator = Validator::make(
             ['time' => '10:00'],
@@ -26,11 +25,9 @@ class TimesOfDayRuleTest extends TestCase
         $this->assertTrue($validator->passes(), 'Validation should pass for a valid time within the range.');
     }
 
-    /**
-     * @test
-     * Test that validation passes for a time in a second valid range.
-     */
-    public function testValidationPassesForTimeInSecondRange()
+    /** Test that validation passes for a time in a second valid range. */
+    #[Test]
+    public function validationPassesForTimeInSecondRange()
     {
         $validator = Validator::make(
             ['time' => '15:00'],
@@ -40,11 +37,9 @@ class TimesOfDayRuleTest extends TestCase
         $this->assertTrue($validator->passes(), 'Validation should pass for a time within the second range.');
     }
 
-    /**
-     * @test
-     * Test that validation fails for a time outside all allowed ranges.
-     */
-    public function testValidationFailsForInvalidTime()
+    /** Test that validation fails for a time outside all allowed ranges. */
+    #[Test]
+    public function validationFailsForInvalidTime()
     {
         $validator = Validator::make(
             ['time' => '20:00'],
@@ -58,11 +53,9 @@ class TimesOfDayRuleTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     * Test that validation fails for an invalid date format.
-     */
-    public function testValidationFailsForInvalidDateFormat()
+    /** Test that validation fails for an invalid date format. */
+    #[Test]
+    public function validationFailsForInvalidDateFormat()
     {
         $validator = Validator::make(
             ['time' => 'invalid-time'],
@@ -76,11 +69,9 @@ class TimesOfDayRuleTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     * Test that validation passes with a null value using the current time.
-     */
-    public function testValidationPassesForNullValue()
+    /** Test that validation passes with a null value using the current time. */
+    #[Test]
+    public function validationPassesForNullValue()
     {
         Carbon::setTestNow(Carbon::create('2023-10-29 09:00', 'UTC'));
 

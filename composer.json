@@ -1,7 +1,7 @@
 {
     "name": "threeleaf/validation-engine",
     "description": "A Laravel Eloquent Model for managing dynamic validation engine rules.",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "type": "library",
     "license": "GPL-3.0+",
     "authors": [

@@ -4,6 +4,7 @@ namespace Tests\Feature\Rules;
 
 use Illuminate\Support\Facades\Validator;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\Test;
 use ReflectionException;
 use ReflectionMethod;
 use Tests\Feature\TestCase;
@@ -13,7 +14,8 @@ use ThreeLeaf\ValidationEngine\Rules\EnumRule;
 /** Test {@link EnumRule}. */
 class EnumRuleTest extends TestCase
 {
-    /** @test {@link EnumRule::validate()}. */
+    /** Test {@link EnumRule::validate()}. */
+    #[Test]
     public function validate()
     {
         $rule = new EnumRule(DayOfWeek::class, [DayOfWeek::FRIDAY]);
@@ -26,7 +28,8 @@ class EnumRuleTest extends TestCase
         $this->assertTrue($validator->passes());
     }
 
-    /** @test {@link EnumRule::validate()} failure. */
+    /** Test {@link EnumRule::validate()} failure. */
+    #[Test]
     public function validateFailure()
     {
         $rule = new EnumRule(DayOfWeek::class);
@@ -40,7 +43,8 @@ class EnumRuleTest extends TestCase
         $this->assertStringContainsString('The day is not a valid instance of', $validator->errors()->first('day'));
     }
 
-    /** @test {@link EnumRule::__construct()} with invalid argument. */
+    /** Test {@link EnumRule::__construct()} with invalid argument. */
+    #[Test]
     public function constructWithNonEnum()
     {
         $this->expectException(InvalidArgumentException::class);
@@ -49,7 +53,8 @@ class EnumRuleTest extends TestCase
         new EnumRule(InvalidEnum::class);
     }
 
-    /** @test {@link EnumRule::__construct()} with invalid argument. */
+    /** Test {@link EnumRule::__construct()} with invalid argument. */
+    #[Test]
     public function constructWithIllegalValue()
     {
         $this->expectException(InvalidArgumentException::class);
@@ -58,8 +63,9 @@ class EnumRuleTest extends TestCase
         new EnumRule(DayOfWeek::class, ['NotADayOfWeek']);
     }
 
-    /** @test that a valid enum NAME is passed in. */
-    public function testValidEnumAbbreviationPasses()
+    /** Test that a valid enum NAME is passed in. */
+    #[Test]
+    public function validEnumAbbreviationPasses()
     {
         $rule = new EnumRule(DayOfWeek::class, [DayOfWeek::MONDAY]);
 
@@ -71,8 +77,9 @@ class EnumRuleTest extends TestCase
         $this->assertTrue($validator->passes(), 'Validation should pass when a valid enum abbreviation is provided.');
     }
 
-    /** @test that a valid enum value is passed in. */
-    public function testValidEnumNamePasses()
+    /** Test that a valid enum value is passed in. */
+    #[Test]
+    public function validEnumNamePasses()
     {
         $rule = new EnumRule(DayOfWeek::class, [DayOfWeek::SATURDAY]);
 
@@ -84,8 +91,9 @@ class EnumRuleTest extends TestCase
         $this->assertTrue($validator->passes(), 'Validation should pass when a valid enum name is provided.');
     }
 
-    /** @test that an invalid enum value fails. */
-    public function testInvalidEnumFails()
+    /** Test that an invalid enum value fails. */
+    #[Test]
+    public function invalidEnumFails()
     {
         $rule = new EnumRule(DayOfWeek::class);
 
@@ -98,8 +106,9 @@ class EnumRuleTest extends TestCase
         $this->assertStringContainsString('The day is not a valid instance of', $validator->errors()->first('day'));
     }
 
-    /** @test that a value outside the allowed subset fails. */
-    public function testValueOutsideSubsetFails()
+    /** Test that a value outside the allowed subset fails. */
+    #[Test]
+    public function valueOutsideSubsetFails()
     {
         $rule = EnumRule::make([
             'allowedValues' => [DayOfWeek::MONDAY, DayOfWeek::TUESDAY],
@@ -115,8 +124,9 @@ class EnumRuleTest extends TestCase
         $this->assertStringContainsString('The day must be one of the allowed values.', $validator->errors()->first('day'));
     }
 
-    /** @test that a value inside the allowed subset passes. */
-    public function testValueInAllowedSubsetPasses()
+    /** Test that a value inside the allowed subset passes. */
+    #[Test]
+    public function valueInAllowedSubsetPasses()
     {
         $rule = new EnumRule(DayOfWeek::class, [DayOfWeek::MONDAY, DayOfWeek::TUESDAY]);
 
@@ -128,8 +138,9 @@ class EnumRuleTest extends TestCase
         $this->assertTrue($validator->passes(), 'Validation should pass when the value is within the allowed subset.');
     }
 
-    /** @test that a null value fails. */
-    public function testNullValueFails()
+    /** Test that a null value fails. */
+    #[Test]
+    public function nullValueFails()
     {
         $rule = new EnumRule(DayOfWeek::class);
 
@@ -143,10 +154,12 @@ class EnumRuleTest extends TestCase
     }
 
     /**
-     * @test {@link EnumRule::convertToEnumByName()} when there is a reflection exception.
+     * Test {@link EnumRule::convertToEnumByName()} when there is a reflection exception.
+     *
      * @throws ReflectionException
      * @noinspection PhpExpressionResultUnusedInspection
      */
+    #[Test]
     public function enumRuleReflectionException()
     {
         /* Step 1: Create a valid EnumRule instance with a real enum. */

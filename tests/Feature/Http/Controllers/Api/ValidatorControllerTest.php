@@ -4,6 +4,7 @@ namespace Tests\Feature\Http\Controllers\Api;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Response as HttpCodes;
 use Tests\Feature\TestCase;
 use ThreeLeaf\ValidationEngine\Enums\ActiveStatus;
@@ -19,7 +20,8 @@ class ValidatorControllerTest extends TestCase
     use RefreshDatabase;
     use WithFaker;
 
-    /** @test {@link ValidatorController::index()}. */
+    /** Test {@link ValidatorController::index()}. */
+    #[Test]
     public function index()
     {
         Validator::factory()->count(3)->create();
@@ -30,7 +32,8 @@ class ValidatorControllerTest extends TestCase
         $response->assertJsonCount(3);
     }
 
-    /** @test {@link ValidatorController::store()}. */
+    /** Test {@link ValidatorController::store()}. */
+    #[Test]
     public function store()
     {
         $data = [
@@ -45,7 +48,8 @@ class ValidatorControllerTest extends TestCase
         $this->assertDatabaseHas(Validator::TABLE_NAME, ['name' => 'Test Validator']);
     }
 
-    /** @test {@link ValidatorController::show()}. */
+    /** Test {@link ValidatorController::show()}. */
+    #[Test]
     public function show()
     {
         $validator = Validator::factory()->create();
@@ -56,7 +60,8 @@ class ValidatorControllerTest extends TestCase
         $response->assertJsonFragment(['name' => $validator->name]);
     }
 
-    /** @test {@link ValidatorController::update()}. */
+    /** Test {@link ValidatorController::update()}. */
+    #[Test]
     public function update()
     {
         $validator = Validator::factory()->create();
@@ -78,7 +83,8 @@ class ValidatorControllerTest extends TestCase
         $this->assertDatabaseMissing(Validator::TABLE_NAME, ['name' => $validator->name]);
     }
 
-    /** @test {@link ValidatorController::destroy()}. */
+    /** Test {@link ValidatorController::destroy()}. */
+    #[Test]
     public function destroy()
     {
         $validator = Validator::factory()->create();
@@ -90,10 +96,11 @@ class ValidatorControllerTest extends TestCase
     }
 
     /**
-     * @test
+     * Test
      * Positive test for {@link ValidatorController::doValidation()}.
      * Test that the validation passes for valid data and validator.
      */
+    #[Test]
     public function validatePasses()
     {
         $validator = Validator::factory()->create(['name' => 'StateValidator', 'active_status' => ActiveStatus::ACTIVE]);
@@ -119,10 +126,11 @@ class ValidatorControllerTest extends TestCase
     }
 
     /**
-     * @test
+     * Test
      * Negative test for {@link ValidatorController::doValidation()}.
      * Test that the validation fails for invalid data.
      */
+    #[Test]
     public function validateFails()
     {
         $validator = Validator::factory()->create(['name' => 'StateValidator', 'active_status' => ActiveStatus::ACTIVE]);

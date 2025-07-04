@@ -41,7 +41,7 @@ class OneOfRule extends ValidationEngineRule
     {
         $isMatched = false;
         foreach ($this->allowedValues as $allowedValue) {
-            if (is_string($allowedValue) && @preg_match($allowedValue, '') !== false) {
+            if (is_string($allowedValue) && $this->isValidRegex($allowedValue)) {
                 /* Regular Expression Check */
                 if (preg_match($allowedValue, $value)) {
                     $isMatched = true;

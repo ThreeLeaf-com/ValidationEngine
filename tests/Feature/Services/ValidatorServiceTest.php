@@ -4,6 +4,7 @@ namespace Tests\Feature\Services;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\Feature\TestCase;
 use ThreeLeaf\ValidationEngine\Enums\ActiveStatus;
 use ThreeLeaf\ValidationEngine\Models\Rule;
@@ -20,8 +21,9 @@ class ValidatorServiceTest extends TestCase
 
     protected ValidatorService $validatorService;
 
-    /** @test {@link ValidatorService::runValidator()} with valid validator and valid rules. */
-    public function testRunValidatorWithValidData()
+    /** Test {@link ValidatorService::runValidator()} with valid validator and valid rules. */
+    #[Test]
+    public function runValidatorWithValidData()
     {
         $validator = Validator::create([
             'validator_id' => 'valid-uuid',
@@ -57,8 +59,9 @@ class ValidatorServiceTest extends TestCase
         $this->assertTrue($isValid, 'The data should be valid for the given validator and rule set.');
     }
 
-    /** @test {@link ValidatorService::runValidator()} with invalid data. */
-    public function testRunValidatorWithInvalidData()
+    /** Test {@link ValidatorService::runValidator()} with invalid data. */
+    #[Test]
+    public function runValidatorWithInvalidData()
     {
         $validator = Validator::create([
             'validator_id' => 'invalid-uuid',
@@ -95,8 +98,9 @@ class ValidatorServiceTest extends TestCase
         $this->assertFalse($isValid, 'The data should be invalid for the given validator and rule set.');
     }
 
-    /** @test {@link ValidatorService::runValidator()} with non-existent validator. */
-    public function testRunValidatorWithNonExistentValidator()
+    /** Test {@link ValidatorService::runValidator()} with non-existent validator. */
+    #[Test]
+    public function runValidatorWithNonExistentValidator()
     {
         $ruleServiceMock = Mockery::mock(RuleService::class);
         $ruleServiceMock->shouldNotReceive('validateRules');
@@ -110,8 +114,9 @@ class ValidatorServiceTest extends TestCase
         $this->assertFalse($isValid, 'The validation should fail with a non-existent validator.');
     }
 
-    /** @test {@link ValidatorService::runValidator()} with inactive validator. */
-    public function testRunValidatorWithInactiveValidator()
+    /** Test {@link ValidatorService::runValidator()} with inactive validator. */
+    #[Test]
+    public function runValidatorWithInactiveValidator()
     {
         $validator = Validator::create([
             'validator_id' => 'inactive-uuid',

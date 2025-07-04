@@ -3,6 +3,7 @@
 namespace Tests\Feature\Models;
 
 use Illuminate\Support\Facades\Validator;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\Feature\TestCase;
 use ThreeLeaf\ValidationEngine\Enums\DayOfWeek;
 use ThreeLeaf\ValidationEngine\Rules\DayTimeRule;
@@ -11,8 +12,9 @@ use ThreeLeaf\ValidationEngine\Rules\EnumRule;
 /** Test {@link DayTimeRule} and {@link EnumRule} combined. */
 class EnumAndDayTimeRuleTest extends TestCase
 {
-    /** @test that a valid dayOfWeek and time range combination passes validation. */
-    public function testValidDayOfWeekAndTimePasses()
+    /** Test that a valid dayOfWeek and time range combination passes validation. */
+    #[Test]
+    public function validDayOfWeekAndTimePasses()
     {
         $dayOfWeekRule = new EnumRule(DayOfWeek::class, [DayOfWeek::MONDAY]);
         $dayTimeRule = new DayTimeRule(DayOfWeek::MONDAY, '09:00', '17:00', 'America/New_York');
@@ -31,8 +33,9 @@ class EnumAndDayTimeRuleTest extends TestCase
         $this->assertTrue($validator->passes(), 'Validation should pass when a valid dayOfWeek and a valid time range are provided.');
     }
 
-    /** @test that an invalid dayOfWeek and time range combination fails validation. */
-    public function testInvalidDayOfWeekAndTimeFails()
+    /** Test that an invalid dayOfWeek and time range combination fails validation. */
+    #[Test]
+    public function invalidDayOfWeekAndTimeFails()
     {
         $dayOfWeekRule = new EnumRule(DayOfWeek::class);
         $dayTimeRule = new DayTimeRule(DayOfWeek::MONDAY, '09:00', '09:01', 'America/New_York');

@@ -3,6 +3,7 @@
 namespace Tests\Feature\Http\Controllers\Api;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Response as HttpCodes;
 use Tests\Feature\TestCase;
 use ThreeLeaf\ValidationEngine\Enums\ActiveStatus;
@@ -16,7 +17,8 @@ class ValidatorRuleControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test {@link ValidatorRuleController::index()}. */
+    /** Test {@link ValidatorRuleController::index()}. */
+    #[Test]
     public function index()
     {
         ValidatorRule::factory()->count(3)->create();
@@ -27,7 +29,8 @@ class ValidatorRuleControllerTest extends TestCase
         $response->assertJsonCount(3);
     }
 
-    /** @test {@link ValidatorRuleController::store()}. */
+    /** Test {@link ValidatorRuleController::store()}. */
+    #[Test]
     public function store()
     {
         $validator = Validator::factory()->create();
@@ -54,7 +57,8 @@ class ValidatorRuleControllerTest extends TestCase
         ]);
     }
 
-    /** @test {@link ValidatorRuleController::store()} with invalid Validator or Rule UUID. */
+    /** Test {@link ValidatorRuleController::store()} with invalid Validator or Rule UUID. */
+    #[Test]
     public function storeIntegrityConstraint()
     {
         $data = [
@@ -69,7 +73,8 @@ class ValidatorRuleControllerTest extends TestCase
         $response->assertStatus(HttpCodes::HTTP_UNPROCESSABLE_ENTITY);
     }
 
-    /** @test {@link ValidatorRuleController::show()}. */
+    /** Test {@link ValidatorRuleController::show()}. */
+    #[Test]
     public function show()
     {
         $validatorRule = ValidatorRule::factory()->create();
@@ -83,7 +88,8 @@ class ValidatorRuleControllerTest extends TestCase
         ]);
     }
 
-    /** @test {@link ValidatorRuleController::update()}. */
+    /** Test {@link ValidatorRuleController::update()}. */
+    #[Test]
     public function update()
     {
         $validatorRule = ValidatorRule::factory()->create(['order_number' => 1]);
@@ -104,7 +110,8 @@ class ValidatorRuleControllerTest extends TestCase
         $this->assertDatabaseHas(ValidatorRule::TABLE_NAME, ['order_number' => 2]);
     }
 
-    /** @test {@link ValidatorRuleController::destroy()}. */
+    /** Test {@link ValidatorRuleController::destroy()}. */
+    #[Test]
     public function destroy()
     {
         $validatorRule = ValidatorRule::factory()->create();

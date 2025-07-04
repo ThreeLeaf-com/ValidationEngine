@@ -7,6 +7,7 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator as LaravelValidator;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\Feature\TestCase;
 use ThreeLeaf\ValidationEngine\Enums\ActiveStatus;
 use ThreeLeaf\ValidationEngine\Models\Rule;
@@ -20,9 +21,11 @@ class ReadmeTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @test {@link Rule::create()}.
+     * Test {@link Rule::create()}.
+     *
      * @throws BindingResolutionException
      */
+    #[Test]
     public function ruleCreate()
     {
         /* Create a new validator */

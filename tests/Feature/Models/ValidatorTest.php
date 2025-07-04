@@ -3,6 +3,7 @@
 namespace Tests\Feature\Models;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Response as HttpCodes;
 use Tests\Feature\TestCase;
 use ThreeLeaf\ValidationEngine\Models\Validator;
@@ -11,12 +12,9 @@ class ValidatorTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * Test index functionality for retrieving validators.
-     *
-     * @return void
-     */
-    public function test_index_validators()
+    /** Test index functionality for retrieving validators. */
+    #[Test]
+    public function index_validators()
     {
         // Create some validator records
         Validator::factory()->count(3)->create();
@@ -28,12 +26,9 @@ class ValidatorTest extends TestCase
         $response->assertJsonCount(3);
     }
 
-    /**
-     * Test store functionality for creating a new validator.
-     *
-     * @return void
-     */
-    public function test_store_validator()
+    /** Test store functionality for creating a new validator. */
+    #[Test]
+    public function store_validator()
     {
         $data = [
             'name' => 'Test Validator',
@@ -47,12 +42,9 @@ class ValidatorTest extends TestCase
         $this->assertDatabaseHas(VAlidator::TABLE_NAME, $data);
     }
 
-    /**
-     * Test show functionality for retrieving a single validator.
-     *
-     * @return void
-     */
-    public function test_show_validator()
+    /** Test show functionality for retrieving a single validator. */
+    #[Test]
+    public function show_validator()
     {
         $validator = Validator::factory()->create();
 
@@ -62,12 +54,9 @@ class ValidatorTest extends TestCase
         $response->assertJsonFragment(['name' => $validator->name]);
     }
 
-    /**
-     * Test update functionality for updating a validator.
-     *
-     * @return void
-     */
-    public function test_update_validator()
+    /** Test update functionality for updating a validator. */
+    #[Test]
+    public function update_validator()
     {
         $validator = Validator::factory()->create();
 
@@ -83,12 +72,9 @@ class ValidatorTest extends TestCase
         $this->assertDatabaseHas(VAlidator::TABLE_NAME, $updatedData);
     }
 
-    /**
-     * Test destroy functionality for deleting a validator.
-     *
-     * @return void
-     */
-    public function test_destroy_validator()
+    /** Test destroy functionality for deleting a validator. */
+    #[Test]
+    public function destroy_validator()
     {
         $validator = Validator::factory()->create();
 

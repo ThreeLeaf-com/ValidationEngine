@@ -3,6 +3,7 @@
 namespace Tests\Feature\Rules;
 
 use Illuminate\Support\Facades\Validator;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\Feature\TestCase;
 use ThreeLeaf\ValidationEngine\Enums\DayOfWeek;
 use ThreeLeaf\ValidationEngine\Rules\DayTimeRule;
@@ -11,7 +12,8 @@ use ThreeLeaf\ValidationEngine\Rules\DayTimeRule;
 class DayTimeRuleTest extends TestCase
 {
 
-    /** @test the rule used in a validator. */
+    /** Test the rule used in a validator. */
+    #[Test]
     public function validatorPass()
     {
         $rule = new DayTimeRule(DayOfWeek::MONDAY, '09:00', '17:00', 'America/New_York');
@@ -26,7 +28,8 @@ class DayTimeRuleTest extends TestCase
         $this->assertEmpty($validator->errors()->all());
     }
 
-    /** @test the rule used in a validator. */
+    /** Test the rule used in a validator. */
+    #[Test]
     public function validatorFail()
     {
         $rule = new DayTimeRule(DayOfWeek::MONDAY, '09:00', '17:00', 'America/New_York');
@@ -41,7 +44,8 @@ class DayTimeRuleTest extends TestCase
         $this->assertContains('The dateTime is not within the allowed time window from 09:00 to 17:00.', $validator->errors()->all());
     }
 
-    /** @test the rule used in a validator. */
+    /** Test the rule used in a validator. */
+    #[Test]
     public function defaultConstructor()
     {
         $rule = new DayTimeRule();

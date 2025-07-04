@@ -5,6 +5,7 @@ namespace Tests\Feature\Services;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator as LaravelValidator;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\Feature\TestCase;
 use ThreeLeaf\ValidationEngine\Models\Rule;
 use ThreeLeaf\ValidationEngine\Rules\DayTimeRule;
@@ -15,7 +16,8 @@ class RuleServiceTest extends TestCase
 {
     protected RuleService $ruleService;
 
-    /** @test {@link RuleService::validateRules()} with valid rule. */
+    /** Test {@link RuleService::validateRules()} with valid rule. */
+    #[Test]
     public function validateRules()
     {
         $rule = new Rule();
@@ -30,7 +32,8 @@ class RuleServiceTest extends TestCase
         $this->assertTrue($isValid, 'The data should be valid with valid rules.');
     }
 
-    /** @test {@link RuleService::validateRules()} with invalid rule. */
+    /** Test {@link RuleService::validateRules()} with invalid rule. */
+    #[Test]
     public function validateRulesInvalidRule()
     {
         $rule = new Rule();
@@ -46,7 +49,8 @@ class RuleServiceTest extends TestCase
         $this->assertFalse($isValid, 'The data should be invalid with invalid rules.');
     }
 
-    /** @test {@link RuleService::compileRule()} compiles valid rule. */
+    /** Test {@link RuleService::compileRule()} compiles valid rule. */
+    #[Test]
     public function compileRule()
     {
         $rule = new Rule();
@@ -65,7 +69,8 @@ class RuleServiceTest extends TestCase
         $this->assertInstanceOf(ValidationRule::class, $compiledRule, 'The rule should be compiled successfully.');
     }
 
-    /** @test {@link RuleService::compileRule()} returns null when compilation fails. */
+    /** Test {@link RuleService::compileRule()} returns null when compilation fails. */
+    #[Test]
     public function compileRuleInvalidRule()
     {
         $rule = new Rule();

@@ -3,6 +3,7 @@
 namespace Tests\Feature\Rules;
 
 use Illuminate\Support\Facades\Validator;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\Feature\TestCase;
 use ThreeLeaf\ValidationEngine\Enums\DayOfWeek;
 use ThreeLeaf\ValidationEngine\Rules\DaysOfWeekRule;
@@ -10,10 +11,9 @@ use ThreeLeaf\ValidationEngine\Rules\DaysOfWeekRule;
 /** Test {@link DaysOfWeekRule}. */
 class DaysOfWeekRuleTest extends TestCase
 {
-    /**
-     * @test that a valid date falls on one of the allowed days of the week.
-     */
-    public function testPositiveValidation()
+    /** Test that a valid date falls on one of the allowed days of the week.*/
+    #[Test]
+    public function positiveValidation()
     {
         $rule = new DaysOfWeekRule([DayOfWeek::MONDAY, DayOfWeek::WEDNESDAY, DayOfWeek::FRIDAY]);
 
@@ -25,10 +25,9 @@ class DaysOfWeekRuleTest extends TestCase
         $this->assertTrue($validator->passes(), 'Validation should pass for a valid day (Wednesday).');
     }
 
-    /**
-     * @test that a date falling on a day outside the allowed days fails validation.
-     */
-    public function testNegativeValidation()
+    /** Test that a date falling on a day outside the allowed days fails validation. */
+    #[Test]
+    public function negativeValidation()
     {
         $rule = new DaysOfWeekRule([DayOfWeek::MONDAY, DayOfWeek::WEDNESDAY, DayOfWeek::FRIDAY]);
 
@@ -45,10 +44,9 @@ class DaysOfWeekRuleTest extends TestCase
         );
     }
 
-    /**
-     * @test the instantiation of the DaysOfWeekRule class.
-     */
-    public function testInstantiateRule()
+    /**Test  the instantiation of the DaysOfWeekRule class.*/
+    #[Test]
+    public function instantiateRule()
     {
         $rule = new DaysOfWeekRule([DayOfWeek::MONDAY, DayOfWeek::WEDNESDAY, DayOfWeek::FRIDAY], 'America/New_York');
 
@@ -58,11 +56,9 @@ class DaysOfWeekRuleTest extends TestCase
         $this->assertEquals('America/New_York', $rule->timezone, 'Timezone should match.');
     }
 
-    /**
-     * @test
-     * Test that validation fails when $value is null.
-     */
-    public function testValidateFailsWithNullValue()
+    /** Test that validation fails when $value is null. */
+    #[Test]
+    public function validateFailsWithNullValue()
     {
         $rule = new DaysOfWeekRule([DayOfWeek::ALL]);
 
