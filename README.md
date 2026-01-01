@@ -2,6 +2,8 @@
 
 **A Laravel library for managing dynamic validation rules and configurations.**
 
+**Compatible with Laravel 12 and PHP 8.2+**
+
 ## Overview
 
 The `ValidationEngine` library provides a robust solution for managing validation rules and configurations in a dynamic manner. It allows you to define validators that group multiple rules and apply them based on various criteria, such as time and status.

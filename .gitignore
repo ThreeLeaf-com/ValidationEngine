@@ -1,15 +1,78 @@
-# Folders
+# Editor directories
+.claude/
+.cursor/
+.fleet/
 .idea/
+.nova/
+.vscode/
+.zed/
+
+# Build and cache directories
+.data/
+.insomnia/
+.notes/
 .run/
+.secrets/
+build/
 cache/
+imports/
+node_modules/
+out/
 storage/
 target/
+test/
+work-items/
 vendor/
-docs/
-# Files
-*.cache
-*.iml
-*.lock
-*.log
+
+# Archives and compressed files
+*.7z
+*.gz
+*.tar.gz
 *.zip
+
+# Backup and temporary files
+*.bak
+*.cache
+*.csv
+*.log
+*.patch
+*.sw[op]
+*.txt
+Thumbs.db
 .DS_Store
+
+# Environment and configuration files
+.env
+.env.*
+!.env.default
+!.env.example
+!.env.testing
+
+# Project files
+.project/
+
+# AI
+.agent-config.json
+.cursorignore
+.cursorrules
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+
+# Coinbase credentials (defense in depth - storage/ is already ignored)
+storage/app/coinbase_cloud_api_key.json
+**/coinbase_cloud_api_key.json
+.phpactor.json
+*.crt
+*.iml
+*.key
+*.pem
+*.production
+*.staging
+Homestead.json
+Homestead.yaml
+TEST*.xml
+auth.json
+hot
+production.*
+staging.*

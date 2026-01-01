@@ -57,12 +57,12 @@ use ThreeLeaf\ValidationEngine\Enums\ActiveStatus;
  *         description="The context of the validator",
  *         example="verify-customer-data"
  *     ),
- *      @OA\Property(
- *          property='order_number',
- *          type='integer',
- *          description='The evaluation order of the validator',
- *          example=1
- *      ),
+ *     @OA\Property(
+ *         property="order_number",
+ *         type="integer",
+ *         description="The evaluation order of the validator",
+ *         example=1
+ *     ),
  *     @OA\Property(
  *         property="active_status",
  *         ref="#/components/schemas/ActiveStatus",
