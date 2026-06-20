@@ -13,7 +13,7 @@ jobs:
           tools: composer
       - name: Update vulnerable packages
         run: |
-          composer update --no-scripts --ignore-platform-reqs \
+          composer update -W --no-scripts --ignore-platform-reqs \
             guzzlehttp/guzzle guzzlehttp/psr7 laravel/framework \
             league/commonmark phpunit/phpunit psy/psysh \
             symfony/http-foundation symfony/http-kernel symfony/mailer \
