@@ -4,6 +4,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use OpenApi\Generator;
+use OpenApi\SourceFinder;
 
 $paths = [
     __FILE__,
@@ -22,7 +23,7 @@ try {
     if (!is_dir($targetDirectory)) {
         mkdir($targetDirectory, 0755, true);
     }
-    $openApi = Generator::scan($paths);
+    $openApi = (new Generator())->generate(new SourceFinder($paths));
     $jsonContent = $openApi->toJson();
     file_put_contents($targetDirectory . '/api-docs.json', $jsonContent);
 
