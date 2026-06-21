@@ -29,7 +29,8 @@ try {
 
     echo "\nSwagger documentation generated successfully.\n\n";
     echo "Scanned paths: \n* " . implode("\n* ", $paths) . "\n\n";
-    echo 'Number of paths found: ' . count($openApi->paths) . "\n\n";
+    $pathCount = is_countable($openApi->paths) ? count($openApi->paths) : 0;
+    echo 'Number of paths found: ' . $pathCount . "\n\n";
 } catch (Exception $e) {
     echo "\nError generating Swagger documentation: " . $e->getMessage() . "\n\n";
 }
