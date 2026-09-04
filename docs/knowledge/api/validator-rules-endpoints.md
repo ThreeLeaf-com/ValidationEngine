@@ -21,7 +21,11 @@ key is composite. They sit under a `validator-rules` prefix.
 | `DELETE` | `/validator-rules/{validator_id}/{rule_id}` | `destroy`         | `204`, empty body      |
 
 There is no route-model binding. `show`, `update`, and `destroy` receive the two
-UUIDs as plain `string` arguments and look the row up themselves.
+UUIDs as plain `string` arguments and look the row up themselves, because the
+composite key defeats Eloquent's single-key `find()` — see
+[Composite-Key Models](/features/composite-key-models.md) and
+[`v_validator_rules`](/data/models/validator-rules-table.md). These routes ship
+with no middleware; see [Route Protection](/security/route-protection.md).
 
 ## Request validation
 

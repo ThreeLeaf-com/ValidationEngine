@@ -18,7 +18,10 @@ timestamp: 2026-09-04T00:00:00Z
 | `DELETE` | `/validators/{validator}` | `destroy`         | `204` with an empty body     |
 | `POST`   | `/validators/validate`    | `doValidation`    | `200` or `422`, see below    |
 
-`ValidatorController` takes a `ValidatorService` through its constructor.
+`ValidatorController` takes a `ValidatorService` through its constructor. The
+validator rows these routes manage are described in
+[`v_validators`](/data/models/validators-table.md), and the routes ship with no
+middleware — see [Route Protection](/security/route-protection.md).
 
 ## Route order
 

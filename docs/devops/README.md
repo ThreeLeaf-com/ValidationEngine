@@ -74,8 +74,9 @@ bump with no tag publishes nothing.
 php util/generate-open-api.php
 ```
 
-The `README.md` "Miscellaneous" section names `util/generate-swagger.php`. That
-file does not exist; `util/generate-open-api.php` is the correct path.
+`util/generate-open-api.php` is the only generator in `util/`. Earlier revisions
+of `README.md` named a `util/generate-swagger.php` that never existed; that
+reference has been corrected.
 
 This generator currently emits `Required @OA\Info() not found` and
 `Required @OA\PathItem() not found`, and reports zero paths found. The warnings

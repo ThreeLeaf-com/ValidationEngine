@@ -166,6 +166,9 @@ Route::middleware(['api', 'auth:sanctum', 'can:manage-validation'])
     ->group(base_path('vendor/threeleaf/validation-engine/routes/api.php'));
 ```
 
+`manage-validation` is an example ability. Define it with `Gate::define()` or a
+policy in your own application; until you do, `can:` denies every request.
+
 These routes give full read and write access to your validation rules. Do not
 expose them unauthenticated. See
 [Route Protection](../knowledge/security/route-protection.md) and the

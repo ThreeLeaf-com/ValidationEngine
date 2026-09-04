@@ -9,7 +9,11 @@ timestamp: 2026-09-04T00:00:00Z
 
 # Schema
 
-A rule is stored as data and rebuilt as an object. Three pieces do the work.
+A rule is stored as data and rebuilt as an object. Three pieces do the work. The
+row itself is described in [`v_rules`](/data/models/rules-table.md); the classes
+it can name are listed in [Rule Types](/features/rule-types.md); the security
+bound on that class set is
+[Rule Class Instantiation](/security/rule-class-instantiation.md).
 
 ## 1. `ClassCast` — on write
 

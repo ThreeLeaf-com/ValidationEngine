@@ -31,7 +31,7 @@ through `__get`/`__set`, array access, `toArray()`, and `toJson()`.
 
 Constructor parameter **names** matter: `make()` matches stored `parameters`
 keys against them by name. See
-[Rule Persistence and Instantiation](rule-persistence-and-instantiation.md).
+[Rule Persistence and Instantiation](/features/rule-persistence-and-instantiation.md).
 
 | Class            | Constructor parameters                                                                                                          |
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------------- |

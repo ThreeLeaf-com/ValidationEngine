@@ -1,7 +1,7 @@
 ---
 type: Database Table
 title: v_validators
-description: Stores a named, uniquely-named group of rules with a context, an order number, and an active status.
+description: Stores a uniquely named group of rules with a context, an order number, and an active status.
 resource: src/Models/Validator.php
 tags: [database, eloquent, validators]
 timestamp: 2026-09-04T00:00:00Z

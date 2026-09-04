@@ -27,7 +27,10 @@ of its own. If a host registers it without an auth middleware, any caller can:
 
 Because validation logic lives in data, write access to these tables is
 equivalent to changing the host application's validation behavior without a
-deployment. Treat these routes as an administrative surface.
+deployment. Treat these routes as an administrative surface. Write access to
+`v_rules` in particular selects which class the engine instantiates — see
+[Rule Class Instantiation](/security/rule-class-instantiation.md). The routes
+themselves are catalogued in [the API reference](/api/index.md).
 
 ## Required control
 
@@ -40,10 +43,23 @@ Route::middleware(['api', 'auth:sanctum', 'can:manage-validation'])
     ->group(base_path('vendor/threeleaf/validation-engine/routes/api.php'));
 ```
 
+The `manage-validation` ability above is illustrative. Define it with
+`Gate::define()` or a policy in your own application; until you do, `can:` denies
+every request.
+
 The package's controllers extend a base `Controller` that uses Laravel's
-`AuthorizesRequests` trait, so a host may also add `$this->authorize(...)` calls
-through its own subclasses. No controller in this package calls `authorize()`
-itself.
+`AuthorizesRequests` trait. Subclassing them does **not** protect the shipped
+routes: `routes/api.php` hard-binds to the concrete `RuleController`,
+`ValidatorController`, and `ValidatorRuleController` classes, so a subclass that
+calls `$this->authorize(...)` is never reached unless the host also writes its
+own route file pointing at that subclass. Middleware is what protects the routes
+as shipped.
+
+No controller in this package calls `authorize()` itself, and all three form
+requests — `RuleRequest`, `ValidatorRequest`, and `ValidatorRuleRequest` —
+hardcode `authorize(): bool { return true; }`. Laravel's per-request
+authorization hook is therefore disabled as well. Authentication and
+authorization must both come from host-applied middleware.
 
 ## Read paths are equally open
 
@@ -67,5 +83,8 @@ That is correct for tests and is **not** a template for production.
 - Verified 2026-09-04 against git HEAD — `src/Providers/ValidationServiceProvider.php` `boot()` calls only `loadMigrationsFrom`
 - Verified 2026-09-04 against git HEAD — `routes/api.php` declares no middleware
 - Verified 2026-09-04 against git HEAD — no controller in `src/Http/Controllers/` calls `authorize()`
+- Verified 2026-09-04 against git HEAD — `RuleRequest`, `ValidatorRequest`, and `ValidatorRuleRequest` each hardcode `authorize(): bool { return true; }`
+- Verified 2026-09-04 against git HEAD — `routes/api.php` binds the concrete controller classes, so a subclass is unreachable without a replacement route file
+- Verified 2026-09-04 against git HEAD — no `Gate::define('manage-validation', ...)` or policy exists in this package
 - Verified 2026-09-04 against git HEAD — `index` methods return `Model::all()` unfiltered
 - `tests/Feature/TestCase.php` (`setUpRoutes`)

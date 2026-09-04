@@ -45,11 +45,14 @@ above it.
   side-effecting constructor widens this surface. Keep rule constructors free of
   I/O.
 - `RuleService::compileRule()` builds through the Laravel container with
-  `makeWith()` and performs **no** subclass check of its own. It catches
-  `Throwable`, logs, and returns `null`. It is not on the `validateRules()` path,
-  but a caller that uses it directly loses the read-side gate.
+  `makeWith()` and performs **no** subclass check of its own. It will construct
+  **any** class the container can resolve, wiring in constructor arguments that
+  came from the `Rule` row. It catches `Throwable`, logs, and returns `null`. The
+  package's own routes never call it and it is not on the `validateRules()` path,
+  but host code that calls it directly loses the gate entirely and must treat
+  `rule_type` and `parameters` as fully trusted input first.
 - Write access to `v_rules` is equivalent to selecting which of those classes
-  runs. Control it with [route protection](route-protection.md).
+  runs. Control it with [route protection](/security/route-protection.md).
 
 ## What is not a risk here
 
@@ -73,6 +76,6 @@ Rule::create([
 
 - Verified 2026-09-04 against git HEAD — `src/Casts/ClassCast.php` `set()` performs the class and subclass checks
 - Verified 2026-09-04 against git HEAD — `src/Models/Rule.php` `instantiateRule()` repeats them before `make()`
-- Verified 2026-09-04 against git HEAD — `src/Services/RuleService.php` `compileRule()` has no subclass check and swallows `Throwable`
+- Verified 2026-09-04 against git HEAD — `src/Services/RuleService.php` `compileRule()` resolves any container-resolvable class, has no subclass check, and swallows `Throwable`
 - Verified 2026-09-04 against git HEAD — `parameters` uses the Eloquent `json` cast, not serialization
 - `src/Rules/ValidationEngineRule.php` (`make`)

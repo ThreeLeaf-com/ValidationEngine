@@ -11,7 +11,8 @@ timestamp: 2026-09-04T00:00:00Z
 
 The authoritative rule set is [`.cursorrules`](../../../.cursorrules) at the
 repository root. This concept records the conventions that the package's own
-source actually follows.
+source actually follows. Terms used across the bundle are defined in the
+[glossary](/style/glossary.md).
 
 ## Comments
 
@@ -81,11 +82,17 @@ that hook runs the generator. Keep annotations valid.
 
 ## Markdown
 
-Documentation in `docs/` is formatted with Prettier:
+Markdown under `docs/` is formatted with Prettier before commit. The repository
+has no `package.json` and no Prettier configuration, so run it through `npx`
+with Prettier's defaults rather than expecting a local dependency:
 
 ```bash
 npx prettier --write "docs/**/*.md"
 ```
+
+Prettier reformats tables to align their columns. A `|` inside inline code — a
+Laravel rule string such as `required\|string\|max:255` — must be escaped, or
+Prettier reads it as a cell separator and splits the row.
 
 # Examples
 
