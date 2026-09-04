@@ -76,3 +76,7 @@ auth.json
 hot
 production.*
 staging.*
+
+# Python
+__pycache__/
+*.py[cod]
