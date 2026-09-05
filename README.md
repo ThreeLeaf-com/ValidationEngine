@@ -9,6 +9,12 @@
 The `ValidationEngine` library provides a robust solution for managing validation rules and configurations in a dynamic manner. It allows you to define validators that group multiple rules and apply them based on various criteria, such as time and status.
 This library is particularly useful for scenarios where validation logic needs to be customized or adjusted without directly modifying the codebase.
 
+## Documentation
+
+- [User Guide](docs/user-guide/README.md) — installation, concepts, rule types, and writing your own rule
+- [Technical Manual](docs/knowledge/index.md) — architecture, data model, API reference, and security notes
+- [DevOps Guide](docs/devops/README.md) — CI, release procedure, and maintainer tasks
+
 # ValidationEngine
 
 [![Latest Stable Version](https://poser.pugx.org/threeleaf/validation-engine/v/stable)](https://packagist.org/packages/threeleaf/validation-engine)
@@ -114,7 +120,7 @@ This library is open-sourced software licensed under the [GPL-3.0+](https://www.
 OpenAPI documentation can be generated within the application using the command:
 
 ```bash
-php util/generate-swagger.php
+php util/generate-open-api.php
 ```
 
 ### Generate Coverage Badge
