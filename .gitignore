@@ -56,7 +56,6 @@ Thumbs.db
 .cursorignore
 .cursorrules
 AGENTS.md
-CLAUDE.md
 GEMINI.md
 
 # Coinbase credentials (defense in depth - storage/ is already ignored)
