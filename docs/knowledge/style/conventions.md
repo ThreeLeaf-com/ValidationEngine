@@ -3,8 +3,8 @@ type: Style Guide
 title: Style Conventions
 description: Comment style, PHPDoc requirements, migration column comments, and embedded OpenAPI annotation rules as practiced in this package.
 resource: .cursorrules
-tags: [style, phpdoc, openapi, conventions]
-timestamp: 2026-09-04T00:00:00Z
+tags: [style, phpdoc, openapi, conventions, documentation]
+timestamp: 2026-09-28T00:00:00Z
 ---
 
 # Schema
@@ -93,6 +93,39 @@ npx prettier --write "docs/**/*.md"
 Prettier reformats tables to align their columns. A `|` inside inline code — a
 Laravel rule string such as `required\|string\|max:255` — must be escaped, or
 Prettier reads it as a cell separator and splits the row.
+
+## Permanent documentation stands on its own: no tickets, PRs, local links, or personal PII
+
+Code comments, docblocks, `docs/knowledge/` concepts, User Guides, DevOps runbooks, and any other committed documentation must make sense to a reader who has nothing but the repository. Do not put any of these in them:
+
+- **Issue IDs or issue tracker links:** GitHub issue numbers (`#123`), Jira keys (`TB-###`, `TL-123`), or direct links to issues.
+- **Pull request numbers or links:** GitHub PR numbers (`#456`), PR URLs, or review threads.
+- **Commit hashes:** Short or full SHAs (`abc1234`). Cite the source file and line range the claim rests on instead.
+- **Links to ephemeral or local-only material:** gitignored folders such as `work-items/`, scratchpad or temp paths, CI run URLs that expire, session identifiers. Anything that will not resolve for a future reader on a clean checkout.
+- **Personal PII (Personally Identifiable Information):** Individual people's real names, personal email addresses, phone numbers, Slack IDs, or @-handles. Name the role or actor instead ("the team lead", "the assignee", "the reporter", "the customer"). Conventional placeholders (`John Doe`, `Jane Smith`, `user@example.com`) are allowed for illustrative examples.
+
+Links to public external documentation, such as a framework's, language's, or vendor's official docs (e.g., Laravel, PHP, Python, Swift, MDN, RFCs), are allowed and encouraged: they resolve for every reader and outlive any single ticket.
+
+State the fact itself, and explain _why_ in full. If a reader needs history, `git log` and `git blame` on the line already carry the commit and its ticket key, and the ticket and pull request are where discussion belongs. Cite evidence as source paths and line ranges. A reference that only makes sense to someone who remembers the ticket is noise to everyone else.
+
+### Live routing exception: scheduled TODO and FIXME
+
+A `TODO` or `FIXME` for work that is already scheduled may name the ticket that will do it, because there the key is live routing information rather than history. Write it in exactly this form, so every exception can be found with one search:
+- GitHub issues: `// TODO(#123): problem + brief plan` or `FIXME(#123): …`
+- Jira issues: `// TODO(TB-123): problem + brief plan` or `FIXME(TB-123): …`
+- Test impasse (`test-diagnosis` skill): `FIXME(test-diagnosis): symptom + plan` (ticket lives in `TEST_PUNCH_LIST.md` / work-item, not in the comment).
+
+Every `TODO`/`FIXME` must carry an explanation in addition to the ticket reference. A bare ticket ID or an unticketed `TODO` both fail review. An existing `TODO` or `FIXME` in another form is corrected when its line is next edited.
+
+### Where tracking and attribution belong
+
+Commit messages, pull request titles/descriptions, issue tracker tickets, and gitignored `work-items/` folders are where ticket keys and author discussions belong; this rule does not apply to them.
+
+Ownership metadata files whose explicit purpose requires identity (`CODEOWNERS`, root `README.md` attribution, `agents/.agent-config.json` machine config, package lockfiles) are exempt for PII. Placeholder keys used to illustrate a format (such as `#${TICKET}` or `[TB-123] fix: …` in commit conventions) are not references.
+
+### Fix as you go
+
+Existing documentation predates this rule and is not swept. Whenever you edit a line that carries one of these references or personal PII, remove it from that line and reword so the line still reads correctly. Leave lines you did not otherwise touch alone.
 
 # Examples
 
