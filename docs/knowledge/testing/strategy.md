@@ -4,7 +4,7 @@ title: Testing Strategy
 description: PHPUnit with Orchestra Testbench, two suites, an in-memory SQLite database with foreign keys enabled, and clover plus HTML coverage into target/.
 resource: phpunit.xml
 tags: [testing, phpunit, testbench, sqlite, coverage]
-timestamp: 2026-09-04T00:00:00Z
+timestamp: 2026-11-07T00:00:00Z
 ---
 
 # Schema
@@ -23,10 +23,10 @@ use.
 
 `phpunit.xml` declares two suites:
 
-| Suite     | Directory       | Character                                        |
-| --------- | --------------- | ------------------------------------------------ |
-| `Unit`    | `tests/Unit`    | Rule classes and the cast, no database           |
-| `Feature` | `tests/Feature` | Models, services, and controllers, with database |
+| Suite     | Directory       | Character                                                             |
+| --------- | --------------- | --------------------------------------------------------------------- |
+| `Unit`    | `tests/Unit`    | Rule classes, the cast, and the OpenAPI generator script, no database |
+| `Feature` | `tests/Feature` | Models, services, and controllers, with database                      |
 
 Feature tests extend `Tests\Feature\TestCase`, which extends
 `Orchestra\Testbench\TestCase`.
@@ -84,14 +84,14 @@ which is the point.
 ./vendor/bin/phpunit --coverage-html target/coverage
 ```
 
-Continuous integration runs the whole suite on PHP 8.2 for pushes and pull
-requests against `main`, via
-[`.github/workflows/tests.yaml`](../../../.github/workflows/tests.yaml).
+There is no continuous integration workflow. The whole suite runs locally with
+`./vendor/bin/phpunit` before a merge.
 
 # Citations
 
 - Verified 2026-09-04 against git HEAD — `phpunit.xml` suites, source include, and both coverage reports
 - Verified 2026-09-04 against git HEAD — `tests/Feature/TestCase.php` registers routes and enables SQLite foreign keys
 - Verified 2026-09-04 against git HEAD — `composer.json` requires phpunit ^11.0 and testbench ^10.0, and lists no Pest or Dusk dependency
-- Verified 2026-09-04 against git HEAD — `.github/workflows/tests.yaml` pins PHP 8.2
+- Verified 2026-11-07 against git HEAD — no `.github/workflows/` directory exists
 - `tests/Feature/Models/ReadmeTest.php`
+- `tests/Unit/Util/GenerateOpenApiScriptTest.php`

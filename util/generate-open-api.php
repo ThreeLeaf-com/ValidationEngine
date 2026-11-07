@@ -4,7 +4,13 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use OpenApi\Generator;
-use OpenApi\SourceFinder;
+use OpenApi\Utils\SourceFinder;
+
+// Composer sets COMPOSER_DEV_MODE=0 for `composer install --no-dev`, which does not install swagger-php.
+if (getenv('COMPOSER_DEV_MODE') === '0') {
+    echo "\nDevelopment dependencies are not installed (composer install --no-dev); skipping OpenAPI generation.\n\n";
+    exit(0);
+}
 
 $paths = [
     __FILE__,
@@ -25,12 +31,15 @@ try {
     }
     $openApi = (new Generator())->generate(new SourceFinder($paths));
     $jsonContent = $openApi->toJson();
-    file_put_contents($targetDirectory . '/api-docs.json', $jsonContent);
+    if (file_put_contents($targetDirectory . '/api-docs.json', $jsonContent) === false) {
+        throw new RuntimeException('Cannot write ' . $targetDirectory . '/api-docs.json');
+    }
 
     echo "\nSwagger documentation generated successfully.\n\n";
     echo "Scanned paths: \n* " . implode("\n* ", $paths) . "\n\n";
     $pathCount = is_countable($openApi->paths) ? count($openApi->paths) : 0;
     echo 'Number of paths found: ' . $pathCount . "\n\n";
-} catch (Exception $e) {
+} catch (Throwable $e) {
     echo "\nError generating Swagger documentation: " . $e->getMessage() . "\n\n";
+    exit(1);
 }

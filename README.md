@@ -19,7 +19,6 @@ This library is particularly useful for scenarios where validation logic needs t
 
 [![Latest Stable Version](https://poser.pugx.org/threeleaf/validation-engine/v/stable)](https://packagist.org/packages/threeleaf/validation-engine)
 [![GitHub last commit](https://img.shields.io/github/last-commit/ThreeLeaf-com/ValidationEngine)](https://github.com/ThreeLeaf-com/ValidationEngine/commits/main)
-[![Build Status](https://github.com/ThreeLeaf-com/ValidationEngine/actions/workflows/tests.yaml/badge.svg?branch=main)](https://github.com/ThreeLeaf-com/ValidationEngine/actions)
 ![Coverage](./public/images/coverage-badge.svg)
 [![PHP Version](https://img.shields.io/packagist/php-v/threeleaf/validation-engine)](https://packagist.org/packages/threeleaf/validation-engine)
 [![License](https://poser.pugx.org/threeleaf/validation-engine/license)](https://packagist.org/packages/threeleaf/validation-engine)
