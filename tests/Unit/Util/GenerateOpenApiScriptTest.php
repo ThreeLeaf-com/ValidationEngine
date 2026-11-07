@@ -94,6 +94,7 @@ class GenerateOpenApiScriptTest extends TestCase
 
         $this->assertSame(1, $exitCode, "The script should exit with code 1. Output:\n{$output}");
         $this->assertStringContainsString('Error generating Swagger documentation', $output);
+        $this->assertStringContainsString('OpenApi\\Generator', $output, 'The missing swagger-php class should cause the failure.');
     }
 
     /** Test that `composer install --no-dev` (COMPOSER_DEV_MODE=0) skips generation and exits with code 0. */
