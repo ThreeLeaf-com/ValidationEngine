@@ -17,21 +17,19 @@ instructions, see the [User Guide](../user-guide/README.md).
 | Packagist      | https://packagist.org/packages/threeleaf/validation-engine |
 | Default branch | `main`                                                     |
 | License        | GPL-3.0+                                                   |
-| CI             | `.github/workflows/tests.yaml`                             |
+| CI             | None (the GitHub Actions workflow was removed)             |
 
 There is no staging branch. Work branches are cut from `main` and merge back to
 `main`.
 
 ## Continuous integration
 
-[`.github/workflows/tests.yaml`](../../.github/workflows/tests.yaml) runs on
-pushes and pull requests targeting `main`. It sets up PHP 8.2 with the
-`mbstring`, `pdo_sqlite`, `zip`, and `curl` extensions, runs
-`composer install --prefer-dist --no-progress`, copies `.env.example` to `.env`,
-and runs `vendor/bin/phpunit --configuration phpunit.xml`.
+The repository has no CI workflow. The GitHub Actions test workflow was
+removed, and `agents/.agent-config.json` sets `versionControl.ciEnabled` to
+`false`. Run the test suite locally before a merge (see Local setup).
 
-Note that CI pins PHP 8.2 while `composer.json` allows `>=8.2`. A change that
-needs a later version must update the workflow as well as the constraint.
+`composer.json` sets `config.platform.php` to `8.2`, so Composer resolves
+dependencies for PHP 8.2 whatever PHP version runs it.
 
 ## Local setup
 
@@ -43,6 +41,13 @@ composer update && composer install
 `php util/generate-open-api.php`. A syntax error in an `@OA\` annotation
 therefore fails the install, not just the documentation build.
 
+A `zircote/swagger-php` upgrade can also fail the install. The generator uses
+swagger-php classes directly, so a major version that removes a class it
+imports stops the hook with a fatal error. swagger-php 7 removed
+`OpenApi\SourceFinder`; the generator uses `OpenApi\Utils\SourceFinder`.
+`tests/Unit/Util/GenerateOpenApiScriptTest.php` runs the generator, so the
+test suite also shows this failure.
+
 Run the tests:
 
 ```bash
@@ -51,7 +56,7 @@ Run the tests:
 
 ## Release procedure
 
-1. Confirm CI is green on `main`.
+1. Confirm the test suite passes on `main`.
 2. Update the `version` field in `composer.json`.
 3. Run `composer update && composer install` so `composer.lock` matches.
 4. Commit and push to `main`.

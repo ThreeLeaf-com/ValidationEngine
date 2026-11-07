@@ -8,9 +8,9 @@ use PHPUnit\Framework\TestCase;
 /**
  * Regression tests for util/generate-open-api.php, the Composer post-install-cmd script.
  *
- * A swagger-php major upgrade that removes a class the script uses makes `composer install` fail
- * (issue #32). These tests run the script in a separate PHP process so that the failure appears in
- * the test suite, not only in the install step.
+ * A swagger-php major upgrade that removes a class the script uses makes `composer install` fail.
+ * These tests check the script's imports and run it in a separate PHP process, so that the
+ * failure appears in the test suite, not only in the install step.
  */
 class GenerateOpenApiScriptTest extends TestCase
 {
