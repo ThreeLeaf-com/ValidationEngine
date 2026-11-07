@@ -6,6 +6,11 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use OpenApi\Generator;
 use OpenApi\Utils\SourceFinder;
 
+if (!class_exists(Generator::class)) {
+    echo "\nzircote/swagger-php is not installed (composer install --no-dev); skipping OpenAPI generation.\n\n";
+    exit(0);
+}
+
 $paths = [
     __FILE__,
     __DIR__ . '/../src',

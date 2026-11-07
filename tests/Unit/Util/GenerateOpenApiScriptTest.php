@@ -35,6 +35,8 @@ class GenerateOpenApiScriptTest extends TestCase
         preg_match_all('/^use\s+([A-Za-z0-9_\\\\]+)(?:\s+as\s+\w+)?\s*;/m', $source, $matches);
 
         $this->assertNotEmpty($matches[1], 'The script should import at least one class.');
+        $useLineCount = preg_match_all('/^use\s/m', $source);
+        $this->assertSame($useLineCount, count($matches[1]), 'Every use statement should be a single class import this test can check.');
         foreach ($matches[1] as $name) {
             $exists = class_exists($name) || interface_exists($name) || trait_exists($name) || enum_exists($name);
             $this->assertTrue($exists, "The script imports {$name}, which does not exist.");
@@ -62,5 +64,53 @@ class GenerateOpenApiScriptTest extends TestCase
         $document = json_decode(file_get_contents($documentPath), true);
         $this->assertIsArray($document, 'The OpenAPI document should be a JSON object.');
         $this->assertArrayHasKey('openapi', $document, 'The OpenAPI document should declare its version.');
+    }
+
+    /** Test that the script exits with code 1 when generation fails, so the install fails too. */
+    #[Test]
+    #[Group('integration')]
+    public function scriptExitsWithErrorWhenGenerationFails()
+    {
+        $sandbox = sys_get_temp_dir() . '/generate-open-api-' . bin2hex(random_bytes(6));
+        mkdir($sandbox . '/util', 0755, true);
+        mkdir($sandbox . '/vendor');
+        mkdir($sandbox . '/src');
+        file_put_contents(
+            $sandbox . '/vendor/autoload.php',
+            '<?php require ' . var_export($this->root . '/vendor/autoload.php', true) . ';'
+        );
+        $script = file_get_contents($this->root . '/util/generate-open-api.php');
+        $brokenScript = str_replace('use OpenApi\\Utils\\SourceFinder;', 'use OpenApi\\MissingSourceFinder as SourceFinder;', $script);
+        $this->assertNotSame($script, $brokenScript, 'The test should be able to break the SourceFinder import.');
+        file_put_contents($sandbox . '/util/generate-open-api.php', $brokenScript);
+
+        try {
+            $command = escapeshellarg(PHP_BINARY) . ' -d xdebug.mode=off '
+                . escapeshellarg($sandbox . '/util/generate-open-api.php') . ' 2>&1';
+            exec($command, $output, $exitCode);
+        } finally {
+            $this->removeDirectory($sandbox);
+        }
+
+        $outputText = implode("\n", $output);
+        $this->assertSame(1, $exitCode, "The script should exit with code 1. Output:\n{$outputText}");
+        $this->assertStringContainsString('Error generating Swagger documentation', $outputText);
+    }
+
+    /**
+     * Delete a directory and everything in it.
+     *
+     * @param string $directory Absolute path of the directory to delete.
+     */
+    private function removeDirectory(string $directory): void
+    {
+        $items = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::CHILD_FIRST
+        );
+        foreach ($items as $item) {
+            $item->isDir() ? rmdir($item->getPathname()) : unlink($item->getPathname());
+        }
+        rmdir($directory);
     }
 }
