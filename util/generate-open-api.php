@@ -25,12 +25,15 @@ try {
     }
     $openApi = (new Generator())->generate(new SourceFinder($paths));
     $jsonContent = $openApi->toJson();
-    file_put_contents($targetDirectory . '/api-docs.json', $jsonContent);
+    if (file_put_contents($targetDirectory . '/api-docs.json', $jsonContent) === false) {
+        throw new RuntimeException('Cannot write ' . $targetDirectory . '/api-docs.json');
+    }
 
     echo "\nSwagger documentation generated successfully.\n\n";
     echo "Scanned paths: \n* " . implode("\n* ", $paths) . "\n\n";
     $pathCount = is_countable($openApi->paths) ? count($openApi->paths) : 0;
     echo 'Number of paths found: ' . $pathCount . "\n\n";
-} catch (Exception $e) {
+} catch (Throwable $e) {
     echo "\nError generating Swagger documentation: " . $e->getMessage() . "\n\n";
+    exit(1);
 }

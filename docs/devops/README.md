@@ -38,13 +38,15 @@ composer update && composer install
 ```
 
 `composer install` triggers the `post-install-cmd` hook, which runs
-`php util/generate-open-api.php`. A syntax error in an `@OA\` annotation
-therefore fails the install, not just the documentation build.
+`php util/generate-open-api.php`. When the generator fails, it exits with
+code 1, and the install fails too.
 
-A `zircote/swagger-php` upgrade can also fail the install. The generator uses
+A `zircote/swagger-php` upgrade can fail the install. The generator uses
 swagger-php classes directly, so a major version that removes a class it
 imports stops the hook with a fatal error. swagger-php 7 removed
-`OpenApi\SourceFinder`; the generator uses `OpenApi\Utils\SourceFinder`.
+`OpenApi\SourceFinder`; the generator uses `OpenApi\Utils\SourceFinder`,
+which exists in swagger-php 6.3.1 and later. `composer.json` therefore
+requires `zircote/swagger-php` `^6.3.1 || ^7.0` in `require-dev`.
 `tests/Unit/Util/GenerateOpenApiScriptTest.php` runs the generator, so the
 test suite also shows this failure.
 
@@ -85,8 +87,10 @@ reference has been corrected.
 
 This generator currently emits `Required @OA\Info() not found` and
 `Required @OA\PathItem() not found`, and reports zero paths found. The warnings
-are pre-existing on `main` and do not fail the build, because the annotations
-carry no top-level `@OA\Info` block. Fixing that is separate work.
+are pre-existing on `main` and do not fail the build. swagger-php reads
+docblock `@OA\` annotations only when `doctrine/annotations` is installed, and
+it is not, so the generator reads no annotations from `src/` and writes only
+`{"openapi": "3.0.0"}`. Fixing that is separate work.
 
 ## Refresh the coverage badge
 
