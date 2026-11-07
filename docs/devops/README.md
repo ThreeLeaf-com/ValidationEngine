@@ -39,12 +39,14 @@ composer update && composer install
 
 `composer install` triggers the `post-install-cmd` hook, which runs
 `php util/generate-open-api.php`. When the generator fails, it exits with
-code 1, and the install fails too. swagger-php is a development dependency, so
-`composer install --no-dev` skips the generator with a message.
+code 1, and the install fails too. swagger-php is a development dependency.
+`composer install --no-dev` sets `COMPOSER_DEV_MODE=0`, and the generator then
+skips with a message. In a development install, a missing swagger-php class
+fails the install.
 
 A `zircote/swagger-php` upgrade can fail the install. The generator uses
 swagger-php classes directly, so a major version that removes a class it
-imports stops the hook with a fatal error. swagger-php 7 removed
+imports makes the hook fail. swagger-php 7 removed
 `OpenApi\SourceFinder`; the generator uses `OpenApi\Utils\SourceFinder`,
 which exists in swagger-php 6.3.1 and later. `composer.json` therefore
 requires `zircote/swagger-php` `^6.3.1 || ^7.0` and `darkaonline/l5-swagger`

@@ -6,8 +6,9 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use OpenApi\Generator;
 use OpenApi\Utils\SourceFinder;
 
-if (!class_exists(Generator::class)) {
-    echo "\nzircote/swagger-php is not installed (composer install --no-dev); skipping OpenAPI generation.\n\n";
+// Composer sets COMPOSER_DEV_MODE=0 for `composer install --no-dev`, which does not install swagger-php.
+if (getenv('COMPOSER_DEV_MODE') === '0') {
+    echo "\nDevelopment dependencies are not installed (composer install --no-dev); skipping OpenAPI generation.\n\n";
     exit(0);
 }
 
