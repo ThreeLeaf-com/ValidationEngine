@@ -4,7 +4,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use OpenApi\Generator;
-use OpenApi\SourceFinder;
+use OpenApi\Utils\SourceFinder;
 
 $paths = [
     __FILE__,
