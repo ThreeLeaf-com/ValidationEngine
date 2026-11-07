@@ -97,6 +97,31 @@ class GenerateOpenApiScriptTest extends TestCase
         $this->assertStringContainsString('Error generating Swagger documentation', $outputText);
     }
 
+    /** Test that the script skips generation and exits with code 0 when swagger-php is not installed. */
+    #[Test]
+    #[Group('integration')]
+    public function scriptSkipsGenerationWithoutSwaggerPhp()
+    {
+        $sandbox = sys_get_temp_dir() . '/generate-open-api-' . bin2hex(random_bytes(6));
+        mkdir($sandbox . '/util', 0755, true);
+        mkdir($sandbox . '/vendor');
+        file_put_contents($sandbox . '/vendor/autoload.php', '<?php');
+        copy($this->root . '/util/generate-open-api.php', $sandbox . '/util/generate-open-api.php');
+
+        try {
+            $command = escapeshellarg(PHP_BINARY) . ' -d xdebug.mode=off '
+                . escapeshellarg($sandbox . '/util/generate-open-api.php') . ' 2>&1';
+            exec($command, $output, $exitCode);
+            $this->assertDirectoryDoesNotExist($sandbox . '/target', 'The script should not write output when it skips.');
+        } finally {
+            $this->removeDirectory($sandbox);
+        }
+
+        $outputText = implode("\n", $output);
+        $this->assertSame(0, $exitCode, "The script should exit with code 0. Output:\n{$outputText}");
+        $this->assertStringContainsString('skipping OpenAPI generation', $outputText);
+    }
+
     /**
      * Delete a directory and everything in it.
      *
