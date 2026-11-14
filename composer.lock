@@ -220,16 +220,16 @@
         },
         {
             "name": "darkaonline/l5-swagger",
-            "version": "11.3.0",
+            "version": "11.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DarkaOnLine/L5-Swagger.git",
-                "reference": "3254d4b1f6ffcfb72d0b81d1349bb4e2c222fc48"
+                "reference": "e01ec3ff575f1ef081be5207be6962dcb06c84ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DarkaOnLine/L5-Swagger/zipball/3254d4b1f6ffcfb72d0b81d1349bb4e2c222fc48",
-                "reference": "3254d4b1f6ffcfb72d0b81d1349bb4e2c222fc48",
+                "url": "https://api.github.com/repos/DarkaOnLine/L5-Swagger/zipball/e01ec3ff575f1ef081be5207be6962dcb06c84ae",
+                "reference": "e01ec3ff575f1ef081be5207be6962dcb06c84ae",
                 "shasum": ""
             },
             "require": {
@@ -288,7 +288,7 @@
             ],
             "support": {
                 "issues": "https://github.com/DarkaOnLine/L5-Swagger/issues",
-                "source": "https://github.com/DarkaOnLine/L5-Swagger/tree/11.3.0"
+                "source": "https://github.com/DarkaOnLine/L5-Swagger/tree/11.3.1"
             },
             "funding": [
                 {
@@ -296,7 +296,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-11-03T06:24:35+00:00"
+            "time": "2026-11-09T07:11:09+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -1150,16 +1150,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "2.13.2",
+            "version": "2.13.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "adee536f95101929f262b8c59e8a61472f347d58"
+                "reference": "6d3cd8285a97eaa352956a4ada92fa03ecce1c4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/adee536f95101929f262b8c59e8a61472f347d58",
-                "reference": "adee536f95101929f262b8c59e8a61472f347d58",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/6d3cd8285a97eaa352956a4ada92fa03ecce1c4e",
+                "reference": "6d3cd8285a97eaa352956a4ada92fa03ecce1c4e",
                 "shasum": ""
             },
             "require": {
@@ -1249,7 +1249,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/2.13.2"
+                "source": "https://github.com/guzzle/psr7/tree/2.13.3"
             },
             "funding": [
                 {
@@ -1265,7 +1265,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-17T23:49:46+00:00"
+            "time": "2026-11-12T15:57:42+00:00"
         },
         {
             "name": "guzzlehttp/uri-template",
@@ -1410,16 +1410,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v12.71.0",
+            "version": "v12.72.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "64dc24f5d965add4d402b4b8b64f59b561112af5"
+                "reference": "b089d3020e508f49b3625726ab4a2c897f1b78d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/64dc24f5d965add4d402b4b8b64f59b561112af5",
-                "reference": "64dc24f5d965add4d402b4b8b64f59b561112af5",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/b089d3020e508f49b3625726ab4a2c897f1b78d5",
+                "reference": "b089d3020e508f49b3625726ab4a2c897f1b78d5",
                 "shasum": ""
             },
             "require": {
@@ -1628,7 +1628,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2026-11-03T15:08:25+00:00"
+            "time": "2026-11-10T15:45:11+00:00"
         },
         {
             "name": "laravel/pail",
@@ -1712,16 +1712,16 @@
         },
         {
             "name": "laravel/prompts",
-            "version": "v0.3.26",
+            "version": "v0.3.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/prompts.git",
-                "reference": "2d1e9bf6bab8d3f383c254db7f2b4ea8816d55e0"
+                "reference": "abdfc75a1ae6c6f21522daed50da7124cbff09d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/prompts/zipball/2d1e9bf6bab8d3f383c254db7f2b4ea8816d55e0",
-                "reference": "2d1e9bf6bab8d3f383c254db7f2b4ea8816d55e0",
+                "url": "https://api.github.com/repos/laravel/prompts/zipball/abdfc75a1ae6c6f21522daed50da7124cbff09d2",
+                "reference": "abdfc75a1ae6c6f21522daed50da7124cbff09d2",
                 "shasum": ""
             },
             "require": {
@@ -1764,22 +1764,22 @@
             ],
             "description": "Add beautiful and user-friendly forms to your command-line applications.",
             "support": {
-                "source": "https://github.com/laravel/prompts/tree/v0.3.26"
+                "source": "https://github.com/laravel/prompts/tree/v0.3.27"
             },
-            "time": "2026-10-09T14:45:13+00:00"
+            "time": "2026-11-09T16:07:10+00:00"
         },
         {
             "name": "laravel/serializable-closure",
-            "version": "v2.1.0",
+            "version": "v2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/serializable-closure.git",
-                "reference": "2d5869a838bbcf37e0d8b0568fc41914e81374b5"
+                "reference": "2bfb44e8af009b553ed2c060c94b0bc3c67b4769"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/2d5869a838bbcf37e0d8b0568fc41914e81374b5",
-                "reference": "2d5869a838bbcf37e0d8b0568fc41914e81374b5",
+                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/2bfb44e8af009b553ed2c060c94b0bc3c67b4769",
+                "reference": "2bfb44e8af009b553ed2c060c94b0bc3c67b4769",
                 "shasum": ""
             },
             "require": {
@@ -1827,7 +1827,7 @@
                 "issues": "https://github.com/laravel/serializable-closure/issues",
                 "source": "https://github.com/laravel/serializable-closure"
             },
-            "time": "2026-09-22T14:32:34+00:00"
+            "time": "2026-10-14T21:20:29+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -6098,16 +6098,16 @@
         },
         {
             "name": "swagger-api/swagger-ui",
-            "version": "v5.34.1",
+            "version": "v5.35.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swagger-api/swagger-ui.git",
-                "reference": "d3296954a6b813898d298815ac3e68daa1cf7408"
+                "reference": "bc207af2a9c79d33f8af1899555f3e4ec67fbf89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swagger-api/swagger-ui/zipball/d3296954a6b813898d298815ac3e68daa1cf7408",
-                "reference": "d3296954a6b813898d298815ac3e68daa1cf7408",
+                "url": "https://api.github.com/repos/swagger-api/swagger-ui/zipball/bc207af2a9c79d33f8af1899555f3e4ec67fbf89",
+                "reference": "bc207af2a9c79d33f8af1899555f3e4ec67fbf89",
                 "shasum": ""
             },
             "type": "library",
@@ -6153,9 +6153,9 @@
             ],
             "support": {
                 "issues": "https://github.com/swagger-api/swagger-ui/issues",
-                "source": "https://github.com/swagger-api/swagger-ui/tree/v5.34.1"
+                "source": "https://github.com/swagger-api/swagger-ui/tree/v5.35.0"
             },
-            "time": "2026-10-30T13:31:19+00:00"
+            "time": "2026-11-13T11:27:08+00:00"
         },
         {
             "name": "symfony/clock",
@@ -9173,16 +9173,16 @@
         },
         {
             "name": "zircote/swagger-php",
-            "version": "7.5.0",
+            "version": "7.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zircote/swagger-php.git",
-                "reference": "a97bfe5f47dfecebece09d87124e7770889ee97a"
+                "reference": "9e782a7b3132a11549ef32dd44bd04a344b01b33"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/a97bfe5f47dfecebece09d87124e7770889ee97a",
-                "reference": "a97bfe5f47dfecebece09d87124e7770889ee97a",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/9e782a7b3132a11549ef32dd44bd04a344b01b33",
+                "reference": "9e782a7b3132a11549ef32dd44bd04a344b01b33",
                 "shasum": ""
             },
             "require": {
@@ -9198,14 +9198,13 @@
             },
             "conflict": {
                 "symfony/console": "<5.4.35",
-                "symfony/process": ">=6, <6.4.14",
                 "symfony/string": "<5.4.41"
             },
             "require-dev": {
                 "doctrine/annotations": "^2.0",
-                "friendsofphp/php-cs-fixer": "3.95.27",
+                "friendsofphp/php-cs-fixer": "3.95.29",
                 "phpbench/phpbench": "^1.7",
-                "phpstan/phpstan": "2.3.4",
+                "phpstan/phpstan": "2.3.5",
                 "phpunit/phpunit": "^11.5 || >=12.5.22",
                 "rector/rector": "2.8.3"
             },
@@ -9254,7 +9253,7 @@
             ],
             "support": {
                 "issues": "https://github.com/zircote/swagger-php/issues",
-                "source": "https://github.com/zircote/swagger-php/tree/7.5.0"
+                "source": "https://github.com/zircote/swagger-php/tree/7.6.0"
             },
             "funding": [
                 {
@@ -9262,7 +9261,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-11-08T21:58:41+00:00"
+            "time": "2026-11-12T02:54:11+00:00"
         }
     ],
     "aliases": [],
